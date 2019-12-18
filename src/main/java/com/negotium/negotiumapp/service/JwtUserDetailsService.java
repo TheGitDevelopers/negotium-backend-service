@@ -1,40 +1,56 @@
 package com.negotium.negotiumapp.service;
 
-import com.negotium.negotiumapp.domain.User;
-import com.negotium.negotiumapp.model.UserDTO;
+import com.negotium.negotiumapp.model.User;
+import com.negotium.negotiumapp.model.UserRole;
 import com.negotium.negotiumapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
+
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
     private PasswordEncoder bcryptEncoder;
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException("User not found with username: " + username);
+            throw new UsernameNotFoundException("User not found");
         }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                new ArrayList<>());
+        org.springframework.security.core.userdetails.User userDetails =
+                new org.springframework.security.core.userdetails.User(
+                        user.getUsername(),
+                        user.getPassword(),
+                        convertAuthorities(user.getRoles()));
+        return userDetails;
     }
 
-    public User save(UserDTO userDTO) {
-        User newUser = new User();
-        newUser.setUsername(userDTO.getUsername());
-        newUser.setPassword(bcryptEncoder.encode(userDTO.getPassword()));
-        return userRepository.save(newUser);
+    private Set<GrantedAuthority> convertAuthorities(Set<UserRole> userRoles) {
+        Set<GrantedAuthority> authorities = new HashSet<>();
+        for (UserRole ur : userRoles) {
+            authorities.add(new SimpleGrantedAuthority(ur.getRole()));
+        }
+        return authorities;
     }
+
 }

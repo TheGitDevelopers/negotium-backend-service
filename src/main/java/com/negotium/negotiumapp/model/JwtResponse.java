@@ -1,4 +1,4 @@
-package com.negotium.negotiumapp.domain;
+package com.negotium.negotiumapp.model;
 
 import java.io.Serializable;
 

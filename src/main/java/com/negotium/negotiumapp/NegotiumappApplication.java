@@ -1,6 +1,5 @@
 package com.negotium.negotiumapp;
 
-import com.negotium.negotiumapp.security.jwt.JwtFilter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

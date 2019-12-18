@@ -1,35 +1,53 @@
 package com.negotium.negotiumapp.service;
 
-import com.negotium.negotiumapp.domain.User;
+import com.negotium.negotiumapp.model.User;
+import com.negotium.negotiumapp.model.UserRole;
 import com.negotium.negotiumapp.repository.UserRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.negotium.negotiumapp.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.Date;
 import java.util.Set;
 
 @Service
-public class UserService{
-
-   private UserRepository userRepository;
+public class UserService {
+    private static final String DEFAULT_ROLE = "ROLE_USER";
+    private UserRepository userRepository;
+    private UserRoleRepository roleRepository;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
+
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
-    public boolean registerUser(User user) {
+    @Autowired
+    public void setRoleRepository(UserRoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
+    }
+
+    public boolean addWithDefaultRole(User user) {
+        UserRole defaultRole = roleRepository.findByRole(DEFAULT_ROLE);
+        user.getRoles().add(defaultRole);
+        String passwordHash = passwordEncoder.encode(user.getPassword());
+        user.setPassword(passwordHash);
         try {
             userRepository.save(user);
             return true;
         } catch (ConstraintViolationException e) {
             Set<ConstraintViolation<?>> errors = e.getConstraintViolations();
-            errors.forEach(err -> System.err.print(
-                    err.getPropertyPath() + " " + err.getInvalidValue() + " " +
+            errors.forEach(err -> System.err.println(
+                    err.getPropertyPath() + " " +
+                            err.getInvalidValue() + " " +
                             err.getMessage()));
             return false;
         } catch (Exception e) {
@@ -37,16 +55,7 @@ public class UserService{
         }
     }
 
-    public String loginUser (User user){
-        long currentTimeMillis = System.currentTimeMillis();
-        return Jwts.builder()
-                .setSubject(user.getUsername())
-                .claim("roles","user")
-                .setIssuedAt(new Date(currentTimeMillis))
-                .setExpiration(new Date(currentTimeMillis + 600000)) //Token expiration after 10min
-                .signWith(SignatureAlgorithm.HS256, user.getPassword())
-                .compact();
-    }
+
 }
 
 
