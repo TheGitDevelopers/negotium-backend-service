@@ -61,4 +61,6 @@ Przechodzimy do pliku **application.properties** i patrzymy czy username i hasł
 spring.datasource.password=admin**
 Następnie uruchamiamy bazę danych **MySQL** 
 
-Projekt uruchamiamy po przez opcję "run" w prawym górnym rogu lub shift + F10
+	  **Projekt uruchamiamy po przez opcję "run" w prawym górnym rogu lub shift + F10**
+
+
