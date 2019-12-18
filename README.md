@@ -57,9 +57,10 @@ Następnie uruchamiamy IntelliJ  i wybieramy:
 **Open -> wskazujemy ścieżkę gdzie jest nasz skalowany projekt i klikamy OK**
 Przy pierwszym uruchomieniu projektu, chwilę może potrwać aż wszystkie pakiety załadują się. Po poprawnym załadowaniu projektu, powinniśmy mieć już dostęp do klas Javy. 
 Przechodzimy do pliku **application.properties** i patrzymy czy username i hasło mamy takie same jak w naszej bazie MySQL jeżeli jest inne to modyfikujemy hasło i użytkownika pod dane z naszych ustawień MySQL
-**spring.datasource.username=root**  
-**spring.datasource.password=admin**
-Następnie uruchamiamy bazę danych **MySQL** 
+**spring.datasource.username=root  
+spring.datasource.password=admin**
+
+	Następnie uruchamiamy bazę danych **MySQL** 
 
 	  **Projekt uruchamiamy po przez opcję "run" w prawym górnym rogu lub shift + F10**
 
