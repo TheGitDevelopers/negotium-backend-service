@@ -55,8 +55,14 @@ public class UserService {
         }
     }
 
+    public void loginUser(String username, String password) {
+        JwtUserDetailsService jwtUserDetailsService = new JwtUserDetailsService();
+        User user = userRepository.findByUsername(username);
+        if (passwordEncoder.encode(password).equals(user.getPassword())) {
+            jwtUserDetailsService.loadUserByUsername(username);
 
+        }
+    }
 }
-
 
 

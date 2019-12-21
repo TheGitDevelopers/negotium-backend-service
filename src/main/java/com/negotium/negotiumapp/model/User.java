@@ -34,7 +34,11 @@ public class User implements Serializable {
     @Email(message = "{com.negotium.negotiumapp.model.User.email.Email}")
     private String email;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)  //TODO: We must fix it
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+            joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id_user")},
+            inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id_role")}
+    )
     private Set<UserRole> roles = new HashSet<>();
 
 

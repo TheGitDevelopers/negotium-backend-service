@@ -55,11 +55,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String login(@ModelAttribute String username, String password){
-        JwtUserDetailsService jwtUserDetailsService = new JwtUserDetailsService();
-        User user = userRepository.findByUsername(username);
-        if(password.equals(user.getPassword())) {
-            jwtUserDetailsService.loadUserByUsername(username);
-        }
+            userService.loginUser(username, password);
         return "index";
     }
 
