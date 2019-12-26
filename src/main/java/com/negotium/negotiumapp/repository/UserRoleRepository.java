@@ -1,6 +1,6 @@
 package com.negotium.negotiumapp.repository;
 
-import com.negotium.negotiumapp.model.UserRole;
+import com.negotium.negotiumapp.model.user.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

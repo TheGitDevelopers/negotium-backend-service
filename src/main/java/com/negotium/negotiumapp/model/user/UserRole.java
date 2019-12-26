@@ -1,4 +1,6 @@
-package com.negotium.negotiumapp.model;
+package com.negotium.negotiumapp.model.user;
+
+import com.negotium.negotiumapp.model.user.User;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;

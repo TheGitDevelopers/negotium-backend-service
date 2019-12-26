@@ -1,7 +1,7 @@
 package com.negotium.negotiumapp.service;
 
-import com.negotium.negotiumapp.model.User;
-import com.negotium.negotiumapp.model.UserRole;
+import com.negotium.negotiumapp.model.user.User;
+import com.negotium.negotiumapp.model.user.UserRole;
 import com.negotium.negotiumapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,6 +34,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
+        System.out.println("Użytkownik " + user.getUsername() + "znaleziony");
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
