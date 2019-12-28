@@ -1,9 +1,8 @@
-package com.negotium.negotiumapp.model;
+package com.negotium.negotiumapp.model.user;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.List;
-
 
 @Entity
 @Table(name = "user_role")

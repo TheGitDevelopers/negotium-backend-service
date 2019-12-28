@@ -1,4 +1,4 @@
-package com.negotium.negotiumapp.model;
+package com.negotium.negotiumapp.model.user;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -6,6 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 
@@ -14,30 +15,29 @@ import java.util.Set;
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
     private Long id;
 
     @Column(name = "username", unique = true)
-    @Size(max = 32, message = "{com.negotium.negotiumapp.model.User.username.Size}")
-    @NotNull(message = "{com.negotium.negotiumapp.model.User.username.NotEmpty}")
+    @Size(max = 32, message = "{com.negotium.negotiumapp.model.user.User.username.Size}")
+    @NotNull(message = "{com.negotium.negotiumapp.model.user.User.username.NotEmpty}")
     private String username;
 
     @Column(name = "password")
-    @NotNull(message = "{com.negotium.negotiumapp.model.User.password.NotEmpty}")
-    @Size(min = 8, message = "{com.negotium.negotiumapp.model.User.password.Size}")
+    @NotNull(message = "{com.negotium.negotiumapp.model.user.User.password.NotEmpty}")
+    @Size(min = 8, message = "{com.negotium.negotiumapp.model.user.User.password.Size}")
     private String password;
 
     @Column(name = "email_address", unique = true)
-    @Email(message = "{com.negotium.negotiumapp.model.User.email.Email}")
+    @Email(message = "{com.negotium.negotiumapp.model.user.User.email.Email}")
     private String email;
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
-            joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id_user")},
-            inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id_role")}
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id_user")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id_role")}
     )
     private Set<UserRole> roles = new HashSet<>();
 
@@ -53,6 +53,10 @@ public class User implements Serializable {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -85,6 +89,23 @@ public class User implements Serializable {
 
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(username, user.username) &&
+                Objects.equals(password, user.password) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, email, roles);
     }
 
     @Override

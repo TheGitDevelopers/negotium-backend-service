@@ -1,7 +1,7 @@
 package com.negotium.negotiumapp.service;
 
-import com.negotium.negotiumapp.model.User;
-import com.negotium.negotiumapp.model.UserRole;
+import com.negotium.negotiumapp.model.user.User;
+import com.negotium.negotiumapp.model.user.UserRole;
 import com.negotium.negotiumapp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,18 +18,15 @@ import java.util.Set;
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
-
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
     private PasswordEncoder bcryptEncoder;
 
+    @Autowired
+    public JwtUserDetailsService(UserRepository userRepository, PasswordEncoder bcryptEncoder) {
+        this.userRepository = userRepository;
+        this.bcryptEncoder = bcryptEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -52,5 +49,4 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
         return authorities;
     }
-
 }

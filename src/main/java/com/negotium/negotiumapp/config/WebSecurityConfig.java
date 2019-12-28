@@ -15,7 +15,6 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -58,8 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers("/authenticate").permitAll()
                 .antMatchers("/").permitAll()
                 .antMatchers("/index").permitAll()
-                .antMatchers("/register").permitAll()
                 .antMatchers("/register_form").permitAll()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/login_form").permitAll()
                 .antMatchers("/login").permitAll()
                 // all other requests need to be authenticated
                 .anyRequest().authenticated().and().
@@ -71,8 +71,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
-
 }
 
 
