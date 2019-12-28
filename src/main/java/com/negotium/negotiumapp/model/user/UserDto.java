@@ -1,6 +1,7 @@
 package com.negotium.negotiumapp.model.user;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class UserDto {
@@ -11,7 +12,8 @@ public class UserDto {
     private String email;
     private Set<UserRole> roles = new HashSet<>();
 
-    public UserDto(){}
+    public UserDto() {
+    }
 
     public UserDto(String username, String password, String email) {
         this.username = username;
@@ -57,6 +59,23 @@ public class UserDto {
 
     public void setRoles(Set<UserRole> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserDto userDto = (UserDto) o;
+        return Objects.equals(id, userDto.id) &&
+                Objects.equals(username, userDto.username) &&
+                Objects.equals(password, userDto.password) &&
+                Objects.equals(email, userDto.email) &&
+                Objects.equals(roles, userDto.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, email, roles);
     }
 
     @Override

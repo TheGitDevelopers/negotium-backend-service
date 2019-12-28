@@ -2,7 +2,7 @@ package com.negotium.negotiumapp.model.user;
 
 public class UserMapper {
 
-    public static UserDto toDto(User user){
+    public static UserDto toDto(User user) {
         UserDto dto = new UserDto();
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
@@ -12,7 +12,7 @@ public class UserMapper {
         return dto;
     }
 
-    public static User toEntity(UserDto user){
+    public static User toEntity(UserDto user) {
         User entity = new User();
         entity.setId(user.getId());
         entity.setUsername(user.getUsername());

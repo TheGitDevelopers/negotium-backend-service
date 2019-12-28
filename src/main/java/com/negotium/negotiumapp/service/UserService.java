@@ -10,6 +10,7 @@ import com.negotium.negotiumapp.model.user.UserRole;
 import com.negotium.negotiumapp.repository.UserRepository;
 import com.negotium.negotiumapp.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,23 +25,18 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     private static final String DEFAULT_ROLE = "ROLE_USER";
+
     private UserRepository userRepository;
+
     private UserRoleRepository roleRepository;
+
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Autowired
-    public void UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserRoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void UserService(UserRoleRepository roleRepository) {
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public boolean addWithDefaultRole(UserDto user) {
@@ -64,28 +60,28 @@ public class UserService {
     }
 
     public void loginUser(String username, String password) {
-        JwtUserDetailsService jwtUserDetailsService = new JwtUserDetailsService();
+        JwtUserDetailsService jwtUserDetailsService = new JwtUserDetailsService(userRepository, passwordEncoder);
         User user = userRepository.findByUsername(username);
-        System.out.println(user.toString());
-        if (passwordEncoder.encode(password).equals(user.getPassword())) {
+        boolean isPasswordOk = passwordEncoder.matches(password, user.getPassword());
+        if (isPasswordOk) {
             jwtUserDetailsService.loadUserByUsername(username);
-        }else{
+        } else {
             throw new InvalidLoginException();
         }
     }
 
-   private UserDto save(UserDto user){
+    private UserDto save(UserDto user) {
         Optional<User> userByUsername = userRepository.findAllByUsername(user.getUsername());
         userByUsername.ifPresent(x -> {
             throw new DuplicateUsernameException();
         });
-       userByUsername.ifPresent(x -> {
-           throw new DuplicateEmailException();
-       });
+        userByUsername.ifPresent(x -> {
+            throw new DuplicateEmailException();
+        });
         User userEntity = UserMapper.toEntity(user);
         User savedUser = userRepository.save(userEntity);
         return UserMapper.toDto(savedUser);
-   }
+    }
 
     public List<UserDto> findAll() {
         return userRepository.findAll()
@@ -93,7 +89,6 @@ public class UserService {
                 .map(UserMapper::toDto)
                 .collect(Collectors.toList());
     }
-
 }
 
 

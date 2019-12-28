@@ -16,6 +16,7 @@ import java.util.List;
 public class UserController {
 
     private UserRepository userRepository;
+
     private UserService userService;
 
     @Autowired
@@ -51,10 +52,8 @@ public class UserController {
     @PostMapping("/login")
     public String login(@RequestParam(value = "username", required = false) String username,
                         @RequestParam(value = "password", required = false) String password) {
-        System.out.println(password);
         userService.loginUser(username, password);
-        return "/index";
+        return "index";
     }
-
 }
 

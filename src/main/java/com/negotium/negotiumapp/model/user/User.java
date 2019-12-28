@@ -36,8 +36,8 @@ public class User implements Serializable {
 
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
-            joinColumns = {@JoinColumn(name="user_id", referencedColumnName="id_user")},
-            inverseJoinColumns = {@JoinColumn(name="role_id", referencedColumnName="id_role")}
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id_user")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id_role")}
     )
     private Set<UserRole> roles = new HashSet<>();
 
@@ -55,7 +55,7 @@ public class User implements Serializable {
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 

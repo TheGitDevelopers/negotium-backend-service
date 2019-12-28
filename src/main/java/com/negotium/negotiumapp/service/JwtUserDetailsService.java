@@ -18,23 +18,19 @@ import java.util.Set;
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
 
-
-    @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Autowired
     private PasswordEncoder bcryptEncoder;
 
+    @Autowired
+    public JwtUserDetailsService(UserRepository userRepository, PasswordEncoder bcryptEncoder) {
+        this.userRepository = userRepository;
+        this.bcryptEncoder = bcryptEncoder;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        System.out.println("Użytkownik " + user.getUsername() + "znaleziony");
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
@@ -53,5 +49,4 @@ public class JwtUserDetailsService implements UserDetailsService {
         }
         return authorities;
     }
-
 }
