@@ -1,4 +1,4 @@
-package com.negotium.negotiumapp.config;
+package com.negotium.negotiumapp.security.v1.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,23 +11,27 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static com.negotium.negotiumapp.security.v2.SecurityConstants.*;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
     private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-
-    @Autowired
     private UserDetailsService jwtUserDetailsService;
+    private JwtRequestFilter jwtRequestFilter;
 
     @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    public WebSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, UserDetailsService jwtUserDetailsService, JwtRequestFilter jwtRequestFilter) {
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.jwtUserDetailsService = jwtUserDetailsService;
+        this.jwtRequestFilter = jwtRequestFilter;
+    }
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -39,8 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-        return passwordEncoder;
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -54,15 +57,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // We don't need CSRF for this example
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
-                .authorizeRequests().antMatchers("/authenticate").permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/index").permitAll()
-                .antMatchers("/register_form").permitAll()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/login_form").permitAll()
-                .antMatchers("/login").permitAll()
+                .authorizeRequests().antMatchers(AUTH_LOGIN_URL, API_URL, REGISTER_URL).permitAll().
                 // all other requests need to be authenticated
-                .anyRequest().authenticated().and().
+                        anyRequest().authenticated().and().
                 // make sure we use stateless session; session won't be used to
                 // store user's state.
                         exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
@@ -72,7 +69,3 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
-
-
-
-

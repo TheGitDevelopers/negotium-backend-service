@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "user")
 public class User implements Serializable {
@@ -40,7 +39,6 @@ public class User implements Serializable {
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id_role")}
     )
     private Set<UserRole> roles = new HashSet<>();
-
 
     public User() {
     }
