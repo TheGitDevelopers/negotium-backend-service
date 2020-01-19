@@ -5,7 +5,7 @@ public final class SecurityConstants {
     public static final String AUTH_LOGIN_URL = "/api/user/authenticate";
     public static final String PUBLIC_URL = "/api/public";
     public static final String SECURED_URL = "/secured";
-    public static final String USER_URL = "/api/users";
+    public static final String USER_URL = "/api/user";
     public static final String API_URL = "/api";
     public static final String REGISTER_URL = "/api/user/register";
 
