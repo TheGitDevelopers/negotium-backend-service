@@ -7,6 +7,7 @@ public class EmployeeDto {
     private Long id;
     private String firstName;
     private String lastName;
+    private int index;
     private String position;
     private String contractType;
     private String negotiumRole;
@@ -26,6 +27,14 @@ public class EmployeeDto {
 
     public Long getId() {
         return id;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public void setId(Long id) {

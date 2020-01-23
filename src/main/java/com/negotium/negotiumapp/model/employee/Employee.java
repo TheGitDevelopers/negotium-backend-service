@@ -7,12 +7,14 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "employee")
-public class Employee {
+public class Employee{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_employee")
     private Long id;
+
+    private int index;
 
     @Column(name = "first_name")
     @Size(max = 32)
@@ -50,6 +52,14 @@ public class Employee {
 
     public Long getId() {
         return id;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public void setId(Long id) {
