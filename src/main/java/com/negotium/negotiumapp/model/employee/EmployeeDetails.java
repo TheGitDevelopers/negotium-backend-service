@@ -23,25 +23,38 @@ public class EmployeeDetails {
     @Column(name = "holiday")
     private int holiday;
 
+    @Column(name = "hours_worked")
+    private double hoursWorked;
+
     @Column(name = "salary")
     private double salary;
 
-    @Column(name = "hours_worked")
-    private double hoursWorked;
+    @Column(name = "position")
+    private String position;
+
+    @Column(name = "concrat_type")
+    private String contractType;
+
+    @Column(name = "negotium_role")
+    private String negotiumRole;
 
     @OneToOne
     private Employee employee;
 
-    public EmployeeDetails() {
+    public EmployeeDetails(){
+
     }
 
-    public EmployeeDetails(@Size(max = 32) int phoneNumber, @Size(max = 64) String email, int holiday, double salary, double hoursWorked, Employee employee) {
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-        this.holiday = holiday;
-        this.salary = salary;
-        this.hoursWorked = hoursWorked;
-        this.employee = employee;
+    private EmployeeDetails(Builder builder){
+        this.salary = builder.salary;
+        this.position = builder.position;
+        this.phoneNumber = builder.phoneNumber;
+        this.negotiumRole = builder.negotiumRole;
+        this.hoursWorked = builder.hoursWorked;
+        this.holiday = builder.holiday;
+        this.employee = builder.employee;
+        this.email = builder.email;
+        this.contractType = builder.contractType;
     }
 
     public Long getId() {
@@ -76,6 +89,14 @@ public class EmployeeDetails {
         this.holiday = holiday;
     }
 
+    public double getHoursWorked() {
+        return hoursWorked;
+    }
+
+    public void setHoursWorked(double hoursWorked) {
+        this.hoursWorked = hoursWorked;
+    }
+
     public double getSalary() {
         return salary;
     }
@@ -84,12 +105,28 @@ public class EmployeeDetails {
         this.salary = salary;
     }
 
-    public double getHoursWorked() {
-        return hoursWorked;
+    public String getPosition() {
+        return position;
     }
 
-    public void setHoursWorked(double hoursWorked) {
-        this.hoursWorked = hoursWorked;
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getContractType() {
+        return contractType;
+    }
+
+    public void setContractType(String contractType) {
+        this.contractType = contractType;
+    }
+
+    public String getNegotiumRole() {
+        return negotiumRole;
+    }
+
+    public void setNegotiumRole(String negotiumRole) {
+        this.negotiumRole = negotiumRole;
     }
 
     public Employee getEmployee() {
@@ -107,15 +144,93 @@ public class EmployeeDetails {
         EmployeeDetails that = (EmployeeDetails) o;
         return phoneNumber == that.phoneNumber &&
                 holiday == that.holiday &&
-                Double.compare(that.salary, salary) == 0 &&
                 Double.compare(that.hoursWorked, hoursWorked) == 0 &&
+                Double.compare(that.salary, salary) == 0 &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(email, that.email) &&
+                Objects.equals(position, that.position) &&
+                Objects.equals(contractType, that.contractType) &&
+                Objects.equals(negotiumRole, that.negotiumRole) &&
                 Objects.equals(employee, that.employee);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, phoneNumber, email, holiday, salary, hoursWorked, employee);
+        return Objects.hash(id, phoneNumber, email, holiday, hoursWorked, salary, position, contractType, negotiumRole, employee);
+    }
+
+    public static final class Builder {
+
+        private int phoneNumber;
+        private String email;
+        private int holiday;
+        private double hoursWorked;
+        private double salary;
+        private String position;
+        private String contractType;
+        private String negotiumRole;
+        private Employee employee;
+
+        public Builder phoneNumber(int phoneNumber) {
+            this.phoneNumber = phoneNumber;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder holiday(int holiday) {
+            this.holiday = holiday;
+            return this;
+        }
+
+        public Builder hoursWorked(double hoursWorked) {
+            this.hoursWorked = hoursWorked;
+            return this;
+        }
+
+        public Builder salary(double salary) {
+            this.salary = salary;
+            return this;
+        }
+
+        public Builder position(String position) {
+            this.position = position;
+            return this;
+        }
+
+        public Builder contractType(String contractType) {
+            this.contractType = contractType;
+            return this;
+        }
+
+        public Builder negotiumRole(String negotiumRole) {
+            this.negotiumRole = negotiumRole;
+            return this;
+        }
+
+        public Builder employee(Employee employee) {
+            this.employee = employee;
+            return this;
+        }
+
+        public EmployeeDetails build(){
+            if(employee.getFirstName().isEmpty()){
+                throw new IllegalStateException("Employee cannot be empty and he must have name");
+            }
+            EmployeeDetails employeeDetails = new EmployeeDetails(this);
+            employeeDetails.contractType = contractType;
+            employeeDetails.email = email;
+            employeeDetails.employee = employee;
+            employeeDetails.holiday = holiday;
+            employeeDetails.hoursWorked = hoursWorked;
+            employeeDetails.negotiumRole = negotiumRole;
+            employeeDetails.phoneNumber = phoneNumber;
+            employeeDetails.position = position;
+            employeeDetails.salary =salary;
+            return employeeDetails;
+        }
     }
 }

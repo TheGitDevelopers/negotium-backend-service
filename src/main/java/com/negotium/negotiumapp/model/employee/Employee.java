@@ -14,8 +14,6 @@ public class Employee{
     @Column(name = "id_employee")
     private Long id;
 
-    private int index;
-
     @Column(name = "first_name")
     @Size(max = 32)
     @NotNull
@@ -25,14 +23,10 @@ public class Employee{
     @NotNull
     private String lastName;
 
-    @Column(name = "position")
-    private String position;
-
-    @Column(name = "concrat_type")
-    private String contractType;
-
-    @Column(name = "negotium_role")
-    private String negotiumRole;
+    @Column(name = "person_id_number")
+    @NotNull
+    @Size(max = 32)
+    private int personIdNumber;
 
     @Column(name = "employee_details")
     @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "employee", fetch = FetchType.EAGER)
@@ -41,25 +35,14 @@ public class Employee{
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String position, String contractType, String negotiumRole, EmployeeDetails employeeDetails) {
+    public Employee(String firstName, String lastName, int personIdNumber){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.position = position;
-        this.contractType = contractType;
-        this.negotiumRole = negotiumRole;
-        this.employeeDetails = employeeDetails;
+        this.personIdNumber = personIdNumber;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     public void setId(Long id) {
@@ -82,28 +65,12 @@ public class Employee{
         this.lastName = lastName;
     }
 
-    public String getPosition() {
-        return position;
+    public int getPersonIdNumber() {
+        return personIdNumber;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getContractType() {
-        return contractType;
-    }
-
-    public void setContractType(String contractType) {
-        this.contractType = contractType;
-    }
-
-    public String getNegotiumRole() {
-        return negotiumRole;
-    }
-
-    public void setNegotiumRole(String negotiumRole) {
-        this.negotiumRole = negotiumRole;
+    public void setPersonIdNumber(int personIdNumber) {
+        this.personIdNumber = personIdNumber;
     }
 
     public EmployeeDetails getEmployeeDetails() {
@@ -119,17 +86,15 @@ public class Employee{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return Objects.equals(id, employee.id) &&
+        return personIdNumber == employee.personIdNumber &&
+                Objects.equals(id, employee.id) &&
                 Objects.equals(firstName, employee.firstName) &&
                 Objects.equals(lastName, employee.lastName) &&
-                Objects.equals(position, employee.position) &&
-                Objects.equals(contractType, employee.contractType) &&
-                Objects.equals(negotiumRole, employee.negotiumRole) &&
                 Objects.equals(employeeDetails, employee.employeeDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, position, contractType, negotiumRole, employeeDetails);
+        return Objects.hash(id, firstName, lastName, personIdNumber, employeeDetails);
     }
 }

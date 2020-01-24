@@ -1,7 +1,8 @@
 package com.negotium.negotiumapp.service;
 
-import com.negotium.negotiumapp.exception.DuplicateIndexException;
+import com.negotium.negotiumapp.exception.DuplicatePersonIdNumberException;
 import com.negotium.negotiumapp.model.employee.Employee;
+import com.negotium.negotiumapp.model.employee.EmployeeDetails;
 import com.negotium.negotiumapp.model.employee.EmployeeDto;
 import com.negotium.negotiumapp.model.employee.EmployeeMapper;
 import com.negotium.negotiumapp.repository.EmployeeRepository;
@@ -24,18 +25,18 @@ public class EmployeeService {
 
 
     public EmployeeDto save(EmployeeDto employeeDto){
-        Optional<Employee> findByIndex = employeeRepository.findByIndex(employeeDto.getIndex());
+        Optional<Employee> findByIndex = employeeRepository.findByPersonIdNumber(employeeDto.getIndex());
         findByIndex.ifPresent(x -> {
-            throw new DuplicateIndexException();
+            throw new DuplicatePersonIdNumberException();
         });
         return mapAndSaveUser(employeeDto);
     }
 
     public EmployeeDto update(EmployeeDto employeeDto) {
-        Optional<Employee> findByIndex = employeeRepository.findByIndex(employeeDto.getIndex());
-        findByIndex.ifPresent(x -> {
+        Optional<Employee> findByPersonIdNumber = employeeRepository.findByPersonIdNumber(employeeDto.getIndex());
+        findByPersonIdNumber.ifPresent(x -> {
             if(!x.getId().equals(x.getId()))
-                throw new DuplicateIndexException();
+                throw new DuplicatePersonIdNumberException();
         });
         return mapAndSaveUser(employeeDto);
     }
