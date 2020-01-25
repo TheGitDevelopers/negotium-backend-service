@@ -1,6 +1,5 @@
 package com.negotium.negotiumapp.controller;
 
-import com.negotium.negotiumapp.model.employee.Employee;
 import com.negotium.negotiumapp.model.employee.EmployeeDto;
 import com.negotium.negotiumapp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;

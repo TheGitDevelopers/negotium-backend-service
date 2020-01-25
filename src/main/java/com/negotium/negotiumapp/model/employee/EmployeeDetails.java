@@ -21,7 +21,7 @@ public class EmployeeDetails {
     private String email;
 
     @Column(name = "holiday")
-    private int holiday;
+    private double holiday;
 
     @Column(name = "hours_worked")
     private double hoursWorked;
@@ -81,11 +81,11 @@ public class EmployeeDetails {
         this.email = email;
     }
 
-    public int getHoliday() {
+    public double getHoliday() {
         return holiday;
     }
 
-    public void setHoliday(int holiday) {
+    public void setHoliday(double holiday) {
         this.holiday = holiday;
     }
 

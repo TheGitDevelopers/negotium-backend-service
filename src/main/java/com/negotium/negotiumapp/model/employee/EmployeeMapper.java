@@ -7,9 +7,8 @@ public class EmployeeMapper {
         dto.setId(employee.getId());
         dto.setFirstName(employee.getFirstName());
         dto.setLastName(employee.getLastName());
-        dto.setPosition(employee.getPosition());
-        dto.setContractType(employee.getContractType());
-        dto.setNegotiumRole(employee.getNegotiumRole());
+        dto.setPersonIdNumber(employee.getPersonIdNumber());
+        dto.setEmployeeDetails(employee.getEmployeeDetails());
         dto.setEmployeeDetails(employee.getEmployeeDetails());
         return dto;
     }
@@ -19,9 +18,8 @@ public class EmployeeMapper {
         entity.setId(employee.getId());
         entity.setFirstName(employee.getFirstName());
         entity.setLastName(employee.getLastName());
-        entity.setPosition(employee.getPosition());
-        entity.setContractType(employee.getContractType());
-        entity.setNegotiumRole(employee.getNegotiumRole());
+        entity.setEmployeeDetails(employee.getEmployeeDetails());
+        employee.setPersonIdNumber(employee.getPersonIdNumber());
         entity.setEmployeeDetails(employee.getEmployeeDetails());
         return entity;
     }

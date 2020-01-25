@@ -7,34 +7,21 @@ public class EmployeeDto {
     private Long id;
     private String firstName;
     private String lastName;
-    private int index;
-    private String position;
-    private String contractType;
-    private String negotiumRole;
+    private int personIdNumber;
     private EmployeeDetails employeeDetails;
 
     public EmployeeDto() {
     }
 
-    public EmployeeDto(String firstName, String lastName, String position, String contractType, String negotiumRole, EmployeeDetails employeeDetails) {
+    public EmployeeDto(String firstName, String lastName, int personIdNumber, EmployeeDetails employeeDetails) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.position = position;
-        this.contractType = contractType;
-        this.negotiumRole = negotiumRole;
+        this.personIdNumber = personIdNumber;
         this.employeeDetails = employeeDetails;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
     }
 
     public void setId(Long id) {
@@ -57,28 +44,12 @@ public class EmployeeDto {
         this.lastName = lastName;
     }
 
-    public String getPosition() {
-        return position;
+    public int getPersonIdNumber() {
+        return personIdNumber;
     }
 
-    public void setPosition(String position) {
-        this.position = position;
-    }
-
-    public String getContractType() {
-        return contractType;
-    }
-
-    public void setContractType(String contractType) {
-        this.contractType = contractType;
-    }
-
-    public String getNegotiumRole() {
-        return negotiumRole;
-    }
-
-    public void setNegotiumRole(String negotiumRole) {
-        this.negotiumRole = negotiumRole;
+    public void setPersonIdNumber(int personIdNumber) {
+        this.personIdNumber = personIdNumber;
     }
 
     public EmployeeDetails getEmployeeDetails() {
@@ -94,17 +65,15 @@ public class EmployeeDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EmployeeDto that = (EmployeeDto) o;
-        return Objects.equals(id, that.id) &&
+        return personIdNumber == that.personIdNumber &&
+                Objects.equals(id, that.id) &&
                 Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName) &&
-                Objects.equals(position, that.position) &&
-                Objects.equals(contractType, that.contractType) &&
-                Objects.equals(negotiumRole, that.negotiumRole) &&
                 Objects.equals(employeeDetails, that.employeeDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, position, contractType, negotiumRole, employeeDetails);
+        return Objects.hash(id, firstName, lastName, personIdNumber, employeeDetails);
     }
 }
