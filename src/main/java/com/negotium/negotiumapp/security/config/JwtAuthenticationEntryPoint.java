@@ -1,4 +1,4 @@
-package com.negotium.negotiumapp.config;
+package com.negotium.negotiumapp.security.config;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
 
-    private static final long serialVersionUID = -7858869558953243875L;
+    private static final long serialVersionUID = -5223626276930068639L;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
