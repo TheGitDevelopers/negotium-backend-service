@@ -2,7 +2,6 @@ package com.negotium.negotiumapp.service;
 
 import com.negotium.negotiumapp.exception.DuplicateEmailException;
 import com.negotium.negotiumapp.exception.DuplicateUsernameException;
-import com.negotium.negotiumapp.exception.InvalidLoginException;
 import com.negotium.negotiumapp.model.user.User;
 import com.negotium.negotiumapp.model.user.UserDto;
 import com.negotium.negotiumapp.model.user.UserMapper;
@@ -10,33 +9,37 @@ import com.negotium.negotiumapp.model.user.UserRole;
 import com.negotium.negotiumapp.repository.UserRepository;
 import com.negotium.negotiumapp.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
-
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
+
     private static final String DEFAULT_ROLE = "ROLE_USER";
-
     private UserRepository userRepository;
-
     private UserRoleRepository roleRepository;
-
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepository userRepository, UserRoleRepository roleRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
+    public UserService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+    }
+
+    @Autowired
+    public void setUserRepository(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    @Autowired
+    public void setRoleRepository(UserRoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
     public boolean addWithDefaultRole(UserDto user) {
@@ -56,17 +59,6 @@ public class UserService {
             return false;
         } catch (Exception e) {
             return false;
-        }
-    }
-
-    public void loginUser(String username, String password) {
-        JwtUserDetailsService jwtUserDetailsService = new JwtUserDetailsService(userRepository, passwordEncoder);
-        User user = userRepository.findByUsername(username);
-        boolean isPasswordOk = passwordEncoder.matches(password, user.getPassword());
-        if (isPasswordOk) {
-            jwtUserDetailsService.loadUserByUsername(username);
-        } else {
-            throw new InvalidLoginException();
         }
     }
 
@@ -90,5 +82,3 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 }
-
-
