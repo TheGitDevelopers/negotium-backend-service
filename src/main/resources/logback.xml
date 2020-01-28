@@ -4,11 +4,16 @@
         <encoder>
             <pattern>[%d{yyyy-MM-dd'T'HH:mm:ss.sss'Z'}] [%C] [%t] [%L] [%-5p] %m%n</pattern>
         </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter"> <level>INFO</level> </filter> <encoder> <pattern>%d{HH:mm:ss.SSS} %highlight(%-5level) [%10thread] %cyan(%-40logger{36}) - %msg%n</pattern> </encoder>
     </appender>
+
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>D:/negotium-backend-service/logs.log</file>
-        <encoder>z
-            <pattern>[%d{yyyy-MM-dd'T'HH:mm:ss.sss'Z'}] [%C] [%t] [%L] [%-5p] %m%n</pattern>
+        <!--<file>D:/negotium-backend-service/logs.log</file>-->
+        <file>logs/log.log</file>
+        <encoder>
+            <pattern>
+                %d{HH:mm:ss.SSS} - %msg%n (%-5level)
+            </pattern>
         </encoder>
     </appender>
     <root level="info">
