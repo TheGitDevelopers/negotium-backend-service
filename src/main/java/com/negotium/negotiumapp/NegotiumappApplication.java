@@ -21,6 +21,7 @@ public class NegotiumappApplication {
     {
         SpringApplication.run(NegotiumappApplication.class, args);
 
+
     }
 
 }
