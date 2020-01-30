@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-    Optional<Employee> findByPersonIdNumber(int personIdNumber);
-    List<Employee> findAllByLastNameContainingIgnoreCase(String lastName);
+    Optional<Employee> findByEmployeeIndex(int employeeIndex);
+    List<Employee> findAllByNameContainingIgnoreCase(String name);
 }

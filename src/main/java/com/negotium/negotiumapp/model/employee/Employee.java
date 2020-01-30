@@ -14,31 +14,26 @@ public class Employee{
     @Column(name = "id_employee")
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "employee_name")
     @Size(max = 32)
     @NotNull
-    private String firstName;
+    private String name;
 
-    @Column(name = "last_name")
+    @Column(name = "employee_index", unique=true)
     @NotNull
-    private String lastName;
+    private int employeeIndex;
 
-    @Column(name = "person_id_number")
-    @NotNull
-    @Size(max = 32)
-    private int personIdNumber;
-
-    @Column(name = "employee_details")
-    @OneToOne(cascade = CascadeType.PERSIST, mappedBy = "employee", fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_details")
     private EmployeeDetails employeeDetails;
 
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, int personIdNumber){
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.personIdNumber = personIdNumber;
+    public Employee(String name, int employeeIndex, EmployeeDetails employeeDetails ){
+        this.name = name;
+        this.employeeIndex = employeeIndex;
+        this.employeeDetails = employeeDetails;
     }
 
     public Long getId() {
@@ -49,28 +44,20 @@ public class Employee{
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public int getEmployeeIndex() {
+        return employeeIndex;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public int getPersonIdNumber() {
-        return personIdNumber;
-    }
-
-    public void setPersonIdNumber(int personIdNumber) {
-        this.personIdNumber = personIdNumber;
+    public void setEmployeeIndex(int employeeIndex) {
+        this.employeeIndex = employeeIndex;
     }
 
     public EmployeeDetails getEmployeeDetails() {
@@ -86,15 +73,14 @@ public class Employee{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Employee employee = (Employee) o;
-        return personIdNumber == employee.personIdNumber &&
+        return employeeIndex == employee.employeeIndex &&
                 Objects.equals(id, employee.id) &&
-                Objects.equals(firstName, employee.firstName) &&
-                Objects.equals(lastName, employee.lastName) &&
+                Objects.equals(name, employee.name) &&
                 Objects.equals(employeeDetails, employee.employeeDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, personIdNumber, employeeDetails);
+        return Objects.hash(id, name, employeeIndex, employeeDetails);
     }
 }

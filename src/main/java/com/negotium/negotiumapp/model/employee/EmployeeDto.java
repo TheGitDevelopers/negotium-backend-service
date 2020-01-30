@@ -5,18 +5,16 @@ import java.util.Objects;
 public class EmployeeDto {
 
     private Long id;
-    private String firstName;
-    private String lastName;
-    private int personIdNumber;
-    private EmployeeDetails employeeDetails;
+    private String name;
+    private int employeeIndex;
+    private EmployeeDetails employeeDetails = new EmployeeDetails();
 
     public EmployeeDto() {
     }
 
-    public EmployeeDto(String firstName, String lastName, int personIdNumber, EmployeeDetails employeeDetails) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.personIdNumber = personIdNumber;
+    public EmployeeDto(String name, int employeeIndex, EmployeeDetails employeeDetails) {
+        this.name = name;
+        this.employeeIndex = employeeIndex;
         this.employeeDetails = employeeDetails;
     }
 
@@ -28,28 +26,20 @@ public class EmployeeDto {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public int getEmployeeIndex() {
+        return employeeIndex;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public int getPersonIdNumber() {
-        return personIdNumber;
-    }
-
-    public void setPersonIdNumber(int personIdNumber) {
-        this.personIdNumber = personIdNumber;
+    public void setEmployeeIndex(int employeeIndex) {
+        this.employeeIndex = employeeIndex;
     }
 
     public EmployeeDetails getEmployeeDetails() {
@@ -65,15 +55,14 @@ public class EmployeeDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         EmployeeDto that = (EmployeeDto) o;
-        return personIdNumber == that.personIdNumber &&
+        return employeeIndex == that.employeeIndex &&
                 Objects.equals(id, that.id) &&
-                Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(name, that.name) &&
                 Objects.equals(employeeDetails, that.employeeDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, personIdNumber, employeeDetails);
+        return Objects.hash(id, name, employeeIndex, employeeDetails);
     }
 }

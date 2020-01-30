@@ -2,7 +2,6 @@ package com.negotium.negotiumapp.service;
 
 import com.negotium.negotiumapp.exception.DuplicatePersonIdNumberException;
 import com.negotium.negotiumapp.model.employee.Employee;
-import com.negotium.negotiumapp.model.employee.EmployeeDetails;
 import com.negotium.negotiumapp.model.employee.EmployeeDto;
 import com.negotium.negotiumapp.model.employee.EmployeeMapper;
 import com.negotium.negotiumapp.repository.EmployeeRepository;
@@ -25,15 +24,15 @@ public class EmployeeService {
 
 
     public EmployeeDto save(EmployeeDto employeeDto){
-        Optional<Employee> findByIndex = employeeRepository.findByPersonIdNumber(employeeDto.getIndex());
-        findByIndex.ifPresent(x -> {
+        Optional<Employee> findByEmployeeIndex = employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
+        findByEmployeeIndex.ifPresent(x -> {
             throw new DuplicatePersonIdNumberException();
         });
         return mapAndSaveUser(employeeDto);
     }
 
     public EmployeeDto update(EmployeeDto employeeDto) {
-        Optional<Employee> findByPersonIdNumber = employeeRepository.findByPersonIdNumber(employeeDto.getIndex());
+        Optional<Employee> findByPersonIdNumber = employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
         findByPersonIdNumber.ifPresent(x -> {
             if(!x.getId().equals(x.getId()))
                 throw new DuplicatePersonIdNumberException();
@@ -47,8 +46,8 @@ public class EmployeeService {
         return EmployeeMapper.toDto(savedEmployee);
     }
 
-    public List<EmployeeDto> findAllByLastName(String lastName){
-        return employeeRepository.findAllByLastNameContainingIgnoreCase(lastName)
+    public List<EmployeeDto> findAllByName(String name){
+        return employeeRepository.findAllByNameContainingIgnoreCase(name)
                 .stream()
                 .map(EmployeeMapper::toDto)
                 .collect(Collectors.toList());

@@ -23,9 +23,9 @@ public class EmployeeController {
     }
 
     @GetMapping("/find-all")
-    public List<EmployeeDto> findAll(@RequestParam(required = false) String lastName){
-       if(lastName != null){
-           return employeeService.findAllByLastName(lastName);
+    public List<EmployeeDto> findAll(@RequestParam(required = false) String name){
+       if(name != null){
+           return employeeService.findAllByName(name);
        }
         return employeeService.findAll();
     }

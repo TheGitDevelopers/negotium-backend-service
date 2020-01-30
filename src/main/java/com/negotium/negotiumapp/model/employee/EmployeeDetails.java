@@ -1,6 +1,7 @@
 package com.negotium.negotiumapp.model.employee;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
@@ -10,10 +11,11 @@ public class EmployeeDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_employee_details")
     private Long id;
 
     @Column(name = "phone_number")
-    @Size(max = 32)
+    @Max(value= 32)
     private int phoneNumber;
 
     @Column(name = "email_address")
@@ -32,13 +34,13 @@ public class EmployeeDetails {
     @Column(name = "position")
     private String position;
 
-    @Column(name = "concrat_type")
+    @Column(name = "contract_type")
     private String contractType;
 
     @Column(name = "negotium_role")
     private String negotiumRole;
 
-    @OneToOne
+   @OneToOne(mappedBy = "employeeDetails")
     private Employee employee;
 
     public EmployeeDetails(){
@@ -217,7 +219,7 @@ public class EmployeeDetails {
         }
 
         public EmployeeDetails build(){
-            if(employee.getFirstName().isEmpty()){
+            if(employee.getName().isEmpty()){
                 throw new IllegalStateException("Employee cannot be empty and he must have name");
             }
             EmployeeDetails employeeDetails = new EmployeeDetails(this);
