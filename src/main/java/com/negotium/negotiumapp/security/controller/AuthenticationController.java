@@ -1,9 +1,9 @@
-package com.negotium.negotiumapp.controller.web;
+package com.negotium.negotiumapp.security.controller;
 
-import com.negotium.negotiumapp.model.JwtRequest;
-import com.negotium.negotiumapp.model.JwtResponse;
-import com.negotium.negotiumapp.config.JwtTokenUtil;
-import com.negotium.negotiumapp.service.JwtUserDetailsService;
+import com.negotium.negotiumapp.security.JwtUserDetailsService;
+import com.negotium.negotiumapp.security.config.JwtTokenUtil;
+import com.negotium.negotiumapp.security.jwtModel.JwtRequest;
+import com.negotium.negotiumapp.security.jwtModel.JwtResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,23 +11,38 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import static com.negotium.negotiumapp.security.SecurityConstans.AUTH_LOGIN_URL;
 
 
 @RestController
 @CrossOrigin
 public class AuthenticationController {
 
-    @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
     private JwtTokenUtil jwtTokenUtil;
-
-    @Autowired
     private JwtUserDetailsService userDetailsService;
 
-    @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+    @Autowired
+    public void setAuthenticationManager(AuthenticationManager authenticationManager) {
+        this.authenticationManager = authenticationManager;
+    }
+
+    @Autowired
+    public void setJwtTokenUtil(JwtTokenUtil jwtTokenUtil) {
+        this.jwtTokenUtil = jwtTokenUtil;
+    }
+
+    @Autowired
+    public void setUserDetailsService(JwtUserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
+
+    @PostMapping(value = AUTH_LOGIN_URL)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
         final UserDetails userDetails = userDetailsService
