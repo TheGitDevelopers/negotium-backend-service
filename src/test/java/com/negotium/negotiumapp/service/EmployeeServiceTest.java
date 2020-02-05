@@ -29,7 +29,7 @@ public class EmployeeServiceTest {
     void setUp() {
         MockitoAnnotations.initMocks(this);
         employeeService = new EmployeeService(
-                employeeRepository, employeeMapper);
+                employeeRepository);
     }
 
     @Test
