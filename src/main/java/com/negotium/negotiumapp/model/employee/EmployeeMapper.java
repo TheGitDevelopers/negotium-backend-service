@@ -1,12 +1,6 @@
 package com.negotium.negotiumapp.model.employee;
 
-//@Mapper
 public interface EmployeeMapper {
-
-//    EmployeeMapper INSTANCE = Mappers.getMapper(EmployeeMapper.class);
-//
-//    EmployeeDto toDTO(Employee entity);
-//    Employee toEntity(EmployeeDto dto);
 
     public static EmployeeDto toDto(Employee employee) {
         EmployeeDto dto = new EmployeeDto();
