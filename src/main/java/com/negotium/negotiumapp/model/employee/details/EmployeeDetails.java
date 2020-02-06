@@ -1,4 +1,6 @@
-package com.negotium.negotiumapp.model.employee;
+package com.negotium.negotiumapp.model.employee.details;
+
+import com.negotium.negotiumapp.model.employee.Employee;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -15,7 +17,7 @@ public class EmployeeDetails {
     private Long id;
 
     @Column(name = "phone_number")
-    @Max(value= 32)
+    @Max(value = 32)
     private int phoneNumber;
 
     @Column(name = "email_address")
@@ -40,14 +42,13 @@ public class EmployeeDetails {
     @Column(name = "negotium_role")
     private String negotiumRole;
 
-   @OneToOne(mappedBy = "employeeDetails")
+    @OneToOne(mappedBy = "employeeDetails")
     private Employee employee;
 
-    public EmployeeDetails(){
-
+    public EmployeeDetails() {
     }
 
-    private EmployeeDetails(Builder builder){
+    EmployeeDetails(EmpDetailsBuilder builder) {
         this.salary = builder.salary;
         this.position = builder.position;
         this.phoneNumber = builder.phoneNumber;
@@ -159,80 +160,5 @@ public class EmployeeDetails {
     @Override
     public int hashCode() {
         return Objects.hash(id, phoneNumber, email, holiday, hoursWorked, salary, position, contractType, negotiumRole, employee);
-    }
-
-    public static final class Builder {
-
-        private int phoneNumber;
-        private String email;
-        private int holiday;
-        private double hoursWorked;
-        private double salary;
-        private String position;
-        private String contractType;
-        private String negotiumRole;
-        private Employee employee;
-
-        public Builder phoneNumber(int phoneNumber) {
-            this.phoneNumber = phoneNumber;
-            return this;
-        }
-
-        public Builder email(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public Builder holiday(int holiday) {
-            this.holiday = holiday;
-            return this;
-        }
-
-        public Builder hoursWorked(double hoursWorked) {
-            this.hoursWorked = hoursWorked;
-            return this;
-        }
-
-        public Builder salary(double salary) {
-            this.salary = salary;
-            return this;
-        }
-
-        public Builder position(String position) {
-            this.position = position;
-            return this;
-        }
-
-        public Builder contractType(String contractType) {
-            this.contractType = contractType;
-            return this;
-        }
-
-        public Builder negotiumRole(String negotiumRole) {
-            this.negotiumRole = negotiumRole;
-            return this;
-        }
-
-        public Builder employee(Employee employee) {
-            this.employee = employee;
-            return this;
-        }
-
-        public EmployeeDetails build(){
-            if(employee.getName().isEmpty()){
-                throw new IllegalStateException("Employee cannot be empty and he must have name");
-            }
-            EmployeeDetails employeeDetails = new EmployeeDetails(this);
-            employeeDetails.contractType = contractType;
-            employeeDetails.email = email;
-            employeeDetails.employee = employee;
-            employeeDetails.holiday = holiday;
-            employeeDetails.hoursWorked = hoursWorked;
-            employeeDetails.negotiumRole = negotiumRole;
-            employeeDetails.phoneNumber = phoneNumber;
-            employeeDetails.position = position;
-            employeeDetails.salary =salary;
-            return employeeDetails;
-        }
     }
 }
