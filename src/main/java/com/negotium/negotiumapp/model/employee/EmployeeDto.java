@@ -1,5 +1,7 @@
 package com.negotium.negotiumapp.model.employee;
 
+import com.negotium.negotiumapp.model.employee.details.EmployeeDetails;
+
 import java.util.Objects;
 
 public class EmployeeDto {

@@ -143,22 +143,22 @@ public class EmployeeDetails {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EmployeeDetails that = (EmployeeDetails) o;
-        return phoneNumber == that.phoneNumber &&
-                holiday == that.holiday &&
-                Double.compare(that.hoursWorked, hoursWorked) == 0 &&
-                Double.compare(that.salary, salary) == 0 &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(email, that.email) &&
-                Objects.equals(position, that.position) &&
-                Objects.equals(contractType, that.contractType) &&
-                Objects.equals(negotiumRole, that.negotiumRole) &&
-                Objects.equals(employee, that.employee);
+        if (!(o instanceof EmployeeDetails)) return false;
+        EmployeeDetails details = (EmployeeDetails) o;
+        return phoneNumber == details.phoneNumber &&
+                Double.compare(details.holiday, holiday) == 0 &&
+                Double.compare(details.hoursWorked, hoursWorked) == 0 &&
+                Double.compare(details.salary, salary) == 0 &&
+                Objects.equals(id, details.id) &&
+                Objects.equals(email, details.email) &&
+                Objects.equals(position, details.position) &&
+                Objects.equals(contractType, details.contractType) &&
+                Objects.equals(negotiumRole, details.negotiumRole) &&
+                Objects.equals(employee, details.employee);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, phoneNumber, email, holiday, hoursWorked, salary, position, contractType, negotiumRole, employee);
+        return Objects.hash(employee.getId(), employee.getName(), employee.getEmployeeIndex());
     }
 }

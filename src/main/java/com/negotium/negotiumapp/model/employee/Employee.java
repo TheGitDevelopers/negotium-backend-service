@@ -1,5 +1,7 @@
 package com.negotium.negotiumapp.model.employee;
 
+import com.negotium.negotiumapp.model.employee.details.EmployeeDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -7,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "employee")
-public class Employee{
+public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +21,7 @@ public class Employee{
     @NotNull
     private String name;
 
-    @Column(name = "employee_index", unique=true)
+    @Column(name = "employee_index", unique = true)
     @NotNull
     private int employeeIndex;
 
@@ -30,7 +32,7 @@ public class Employee{
     public Employee() {
     }
 
-    public Employee(String name, int employeeIndex, EmployeeDetails employeeDetails ){
+    public Employee(String name, int employeeIndex, EmployeeDetails employeeDetails) {
         this.name = name;
         this.employeeIndex = employeeIndex;
         this.employeeDetails = employeeDetails;
@@ -71,16 +73,16 @@ public class Employee{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Employee)) return false;
         Employee employee = (Employee) o;
         return employeeIndex == employee.employeeIndex &&
                 Objects.equals(id, employee.id) &&
-                Objects.equals(name, employee.name) &&
+                name.equals(employee.name) &&
                 Objects.equals(employeeDetails, employee.employeeDetails);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, employeeIndex, employeeDetails);
+        return Objects.hash(id, name, employeeIndex);
     }
 }

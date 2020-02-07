@@ -18,12 +18,11 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository){
+    public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
-
-    public EmployeeDto save(EmployeeDto employeeDto){
+    public EmployeeDto save(EmployeeDto employeeDto) {
         Optional<Employee> findByEmployeeIndex = employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
         findByEmployeeIndex.ifPresent(x -> {
             throw new DuplicatePersonIdNumberException();
@@ -34,7 +33,8 @@ public class EmployeeService {
     public EmployeeDto update(EmployeeDto employeeDto) {
         Optional<Employee> findByPersonIdNumber = employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
         findByPersonIdNumber.ifPresent(x -> {
-            if(!x.getId().equals(x.getId()))
+//            TODO: throw this into collection and check whether it contains one element
+            if (!x.getId().equals(x.getId()))
                 throw new DuplicatePersonIdNumberException();
         });
         return mapAndSaveUser(employeeDto);
@@ -46,21 +46,21 @@ public class EmployeeService {
         return EmployeeMapper.toDto(savedEmployee);
     }
 
-    public List<EmployeeDto> findAllByName(String name){
+    public List<EmployeeDto> findAllByName(String name) {
         return employeeRepository.findAllByNameContainingIgnoreCase(name)
                 .stream()
                 .map(EmployeeMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public List<EmployeeDto> findAll(){
+    public List<EmployeeDto> findAll() {
         return employeeRepository.findAll()
                 .stream()
                 .map(EmployeeMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public Optional<EmployeeDto> findById(Long id){
+    public Optional<EmployeeDto> findById(Long id) {
         return employeeRepository.findById(id).map(EmployeeMapper::toDto);
     }
 }

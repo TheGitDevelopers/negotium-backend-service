@@ -1,6 +1,6 @@
 package com.negotium.negotiumapp.model.employee;
 
-public interface EmployeeMapper {
+public class EmployeeMapper {
 
     public static EmployeeDto toDto(Employee employee) {
         EmployeeDto dto = new EmployeeDto();
