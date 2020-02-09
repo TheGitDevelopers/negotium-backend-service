@@ -16,20 +16,18 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
 
 public class EmployeeServiceTest {
     public final Long idTEST = 2L;
     public final String nameTEST = "Jimmy Doe";
     public final String emailTEST = "jimmy@negotium.com";
-
     EmployeeService employeeService;
-    @Mock
-    EmployeeMapper employeeMapper;
+
     @Mock
     private EmployeeRepository employeeRepository;
 
@@ -41,10 +39,32 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void findAll() {
-        List<Employee> employees = Arrays.asList(new Employee(), new Employee(), new Employee(), new Employee());
+    void should_save_employeeDTO() {
+        //given
+        Employee entity = getTestEmployee(nameTEST, idTEST, emailTEST);
+        given(employeeRepository.save(any(Employee.class))).willReturn(entity);
 
-        when(employeeRepository.findAll()).thenReturn(employees);
+        //when
+        EmployeeDto savedDTO = employeeService.save(EmployeeMapper.toDto(entity));
+
+        //then
+        assertEquals(entity.getName(), savedDTO.getName());
+        assertEquals(entity.getId(), savedDTO.getId());
+        assertEquals(entity.getEmployeeIndex(), savedDTO.getEmployeeIndex());
+    }
+
+    @Test
+    void update() {
+    }
+
+    @Test
+    void findAllByName() {
+    }
+
+    @Test
+    void should_find_all_employees() {
+        List<Employee> employees = Arrays.asList(new Employee(), new Employee(), new Employee(), new Employee());
+        given(employeeRepository.findAll()).willReturn(employees);
 
         List<EmployeeDto> employeeDTOs = employeeService.findAll();
 
@@ -53,7 +73,7 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void findById() {
+    void should_find_employee_by_id() {
         Employee employee = getTestEmployee(nameTEST, idTEST, emailTEST);
 
         given(employeeRepository.findById(anyLong())).willReturn(Optional.of(employee));
@@ -62,8 +82,10 @@ public class EmployeeServiceTest {
 
         then(employeeRepository).should(times(1)).findById(anyLong());
 
-        optional_dto.ifPresent(dto ->
-                assertEquals(nameTEST, dto.getName()));
+        optional_dto.ifPresent(dto -> {
+            assertEquals(nameTEST, dto.getName());
+            assertEquals(idTEST, dto.getId());
+        });
     }
 
     private Employee getTestEmployee(String name, long id, String email) {
