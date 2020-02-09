@@ -23,7 +23,8 @@ public class EmployeeService {
     }
 
     public EmployeeDto save(EmployeeDto employeeDto) {
-        Optional<Employee> findByEmployeeIndex = employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
+        Optional<Employee> findByEmployeeIndex =
+                employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
         findByEmployeeIndex.ifPresent(x -> {
             throw new DuplicatePersonIdNumberException();
         });
@@ -31,10 +32,10 @@ public class EmployeeService {
     }
 
     public EmployeeDto update(EmployeeDto employeeDto) {
-        Optional<Employee> findByPersonIdNumber = employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
+        Optional<Employee> findByPersonIdNumber =
+                employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
         findByPersonIdNumber.ifPresent(x -> {
-//            TODO: throw this into collection and check whether it contains one element
-            if (!x.getId().equals(x.getId()))
+            if ((!x.getId().equals(employeeDto.getId())))
                 throw new DuplicatePersonIdNumberException();
         });
         return mapAndSaveUser(employeeDto);

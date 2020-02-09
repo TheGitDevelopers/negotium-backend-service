@@ -2,21 +2,21 @@ package com.negotium.negotiumapp.model.employee;
 
 public class EmployeeMapper {
 
-    public static EmployeeDto toDto(Employee employee) {
+    public static EmployeeDto toDto(Employee entity) {
         EmployeeDto dto = new EmployeeDto();
-        dto.setId(employee.getId());
-        dto.setName(employee.getName());
-        dto.setEmployeeIndex(employee.getEmployeeIndex());
-        dto.setEmployeeDetails(employee.getEmployeeDetails());
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setEmployeeIndex(entity.getEmployeeIndex());
+        dto.setEmployeeDetails(entity.getEmployeeDetails());
         return dto;
     }
 
-    public static Employee toEntity(EmployeeDto employee) {
+    public static Employee toEntity(EmployeeDto dto) {
         Employee entity = new Employee();
-        entity.setId(employee.getId());
-        entity.setName(employee.getName());
-        entity.setEmployeeDetails(employee.getEmployeeDetails());
-        employee.setEmployeeIndex(employee.getEmployeeIndex());
+        entity.setId(dto.getId());
+        entity.setName(dto.getName());
+        entity.setEmployeeDetails(dto.getEmployeeDetails());
+        entity.setEmployeeIndex(dto.getEmployeeIndex());
         return entity;
     }
 }
