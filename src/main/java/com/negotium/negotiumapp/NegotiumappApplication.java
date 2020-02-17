@@ -19,6 +19,7 @@ public class NegotiumappApplication {
     public static void main(String[] args) {
         SpringApplication.run(NegotiumappApplication.class, args);
 
+
     }
 
     @Bean

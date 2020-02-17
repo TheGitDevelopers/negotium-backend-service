@@ -64,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         REGISTER_URL,
                         "/",
                         "/login**",
+                        "/api/employee/**",
                         "/webjars/**",
                         "/error**").permitAll().
                 // all other requests need to be authenticated
