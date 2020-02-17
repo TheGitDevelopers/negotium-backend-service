@@ -16,7 +16,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -70,23 +72,19 @@ public class EmployeeServiceTest {
 
     @Test
     void should_find_employeeDTO_by_employeeIndex_and_throw_duplicatePerson_exception() throws DuplicatePersonIdNumberException {
-        //given
+//        //given
         Employee entity = getTestEmployee(nameTEST, 666L, emailTEST);
         Employee entity2 = getTestEmployee((nameTEST + "2"), idTEST, emailTEST);
         given(employeeRepository.save(any(Employee.class))).willReturn(entity);
         given(employeeRepository.findByEmployeeIndex(anyInt())).willReturn(Optional.of(entity));
 
-        //when
+//        //when
         EmployeeDto dto2 = EmployeeMapper.toDto(entity2);
 
-        DuplicatePersonIdNumberException thrown = assertThrows(DuplicatePersonIdNumberException.class,
-                () -> employeeService.update(dto2));
-        EmployeeDto savedDTO = employeeService.update(dto2);
-
-        //then
-        assertEquals(entity.getEmployeeIndex(), savedDTO.getEmployeeIndex());
-        assertNotEquals(entity.getId(), savedDTO.getId());
-        assertEquals("User with this person id number is already exist", thrown.getMessage());
+//        then
+        assertThatThrownBy(() -> employeeService.update(dto2))
+                .isInstanceOf(DuplicatePersonIdNumberException.class)
+                .hasMessage("User with this person id number is already exist");
     }
 
     @Test
