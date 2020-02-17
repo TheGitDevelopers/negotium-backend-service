@@ -1,5 +1,6 @@
 package com.negotium.negotiumapp.service;
 
+import com.negotium.negotiumapp.exception.DuplicatePersonIdNumberException;
 import com.negotium.negotiumapp.model.user.employee.Employee;
 import com.negotium.negotiumapp.model.user.employee.EmployeeDto;
 import com.negotium.negotiumapp.model.user.employee.EmployeeMapper;
@@ -15,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
@@ -68,7 +69,28 @@ public class EmployeeServiceTest {
     }
 
     @Test
-    void findAllByName() {
+    void should_find_employeeDTO_by_employeeIndex_and_throw_duplicatePerson_exception() throws DuplicatePersonIdNumberException {
+        //given
+        Employee entity = getTestEmployee(nameTEST, 666L, emailTEST);
+        Employee entity2 = getTestEmployee((nameTEST + "2"), idTEST, emailTEST);
+        given(employeeRepository.save(any(Employee.class))).willReturn(entity);
+        given(employeeRepository.findByEmployeeIndex(anyInt())).willReturn(Optional.of(entity));
+
+        //when
+        EmployeeDto dto2 = EmployeeMapper.toDto(entity2);
+
+        DuplicatePersonIdNumberException thrown = assertThrows(DuplicatePersonIdNumberException.class,
+                () -> employeeService.update(dto2));
+        EmployeeDto savedDTO = employeeService.update(dto2);
+
+        //then
+        assertEquals(entity.getEmployeeIndex(), savedDTO.getEmployeeIndex());
+        assertNotEquals(entity.getId(), savedDTO.getId());
+        assertEquals("User with this person id number is already exist", thrown.getMessage());
+    }
+
+    @Test
+    void should_find_all_3_different_employeeDTOs_by_input_name() {
         //given
         List<Employee> employees = Arrays.asList(
                 getTestEmployee(nameTEST, idTEST, emailTEST),
@@ -77,11 +99,14 @@ public class EmployeeServiceTest {
         given(employeeRepository.findAllByName(anyString())).willReturn(employees);
 
         //when
-        List<EmployeeDto> optional_dto = employeeService.findAllByName("Doe");
+        List<EmployeeDto> found_dto = employeeService.findAllByName("Doe");
         then(employeeRepository).should(times(1)).findAllByName(anyString());
 
         //then
-        assertEquals(3, employees.size());
+        assertEquals(3, found_dto.size());
+        assertNotEquals(found_dto.get(0), found_dto.get(1));
+        assertNotEquals(found_dto.get(1), found_dto.get(2));
+        assertNotEquals(found_dto.get(0), found_dto.get(2));
     }
 
     @Test
@@ -120,7 +145,6 @@ public class EmployeeServiceTest {
         builder.setContractType("FullTime");
         builder.setHoliday(22);
         builder.setSalary(30000);
-        builder.setEmployee(employee);
 
         EmployeeDetails details = builder.getResult();
 
