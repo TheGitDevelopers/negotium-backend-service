@@ -1,6 +1,6 @@
 package com.negotium.automatic.waits;
 
-import com.negotium.negotiumapp.automatic.driver.manager.DriverManager;
+import com.negotium.automatic.driver.manager.DriverManager;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;

@@ -2,8 +2,8 @@ package com.negotium.automatic.tests;
 
 import com.negotium.automatic.configuration.ConfigurationProperties;
 import com.negotium.automatic.configuration.PropertiesLoader;
-import com.negotium.negotiumapp.automatic.driver.manager.DriverManager;
-import com.negotium.negotiumapp.automatic.driver.manager.DriverUtils;
+import com.negotium.automatic.driver.manager.DriverManager;
+import com.negotium.automatic.driver.manager.DriverUtils;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
