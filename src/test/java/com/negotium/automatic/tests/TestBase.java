@@ -2,11 +2,10 @@ package com.negotium.automatic.tests;
 
 import com.negotium.automatic.configuration.ConfigurationProperties;
 import com.negotium.automatic.configuration.PropertiesLoader;
+import com.negotium.automatic.driver.BrowserType;
 import com.negotium.automatic.driver.manager.DriverManager;
 import com.negotium.automatic.driver.manager.DriverUtils;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.*;
 
 import java.util.Properties;
 
@@ -21,8 +20,10 @@ public class TestBase {
         ConfigurationProperties.setProperties(propertiesFromFile);
     }
 
+    @Parameters("browser")
     @BeforeMethod
-    public void beforeTest(){
+    public void beforeTest(@Optional BrowserType browserType){
+        DriverManager.setWebDriver(browserType);
         DriverManager.getWebDriver();
         DriverUtils.setInitialConfiguration();
         DriverUtils.navigateToPage(APPLICATION_URL);
