@@ -2,10 +2,13 @@ package com.negotium.negotiumapp.model.user.employee;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.negotium.negotiumapp.model.user.employee.details.EmployeeDetails;
+import com.negotium.negotiumapp.model.user.employee.request.HolidayRequest;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "employee")
@@ -28,6 +31,9 @@ public class Employee {
     @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id_details")
     private EmployeeDetails employeeDetails;
+
+    @OneToMany(mappedBy = "employee")
+    private List<HolidayRequest> holidayRequest;
 
     public Employee() {
     }
@@ -70,6 +76,14 @@ public class Employee {
         this.employeeDetails = employeeDetails;
     }
 
+    public List<HolidayRequest> getHolidayRequest() {
+        return holidayRequest;
+    }
+
+    public void setHolidayRequest(List<HolidayRequest> holidayRequest) {
+        this.holidayRequest = holidayRequest;
+    }
+
     @Override
     public String toString() {
         return "Employee{" +
@@ -79,4 +93,20 @@ public class Employee {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return employeeIndex == employee.employeeIndex &&
+                Objects.equals(id, employee.id) &&
+                Objects.equals(name, employee.name) &&
+                Objects.equals(employeeDetails, employee.employeeDetails) &&
+                Objects.equals(holidayRequest, employee.holidayRequest);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, employeeIndex, employeeDetails, holidayRequest);
+    }
 }
