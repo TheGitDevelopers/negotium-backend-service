@@ -6,4 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.CONFLICT, reason = "The request could not be deleted. Please try again later")
 public class HolidayRequestRemoveException extends RuntimeException {
+    public HolidayRequestRemoveException(String message) {
+        super(message);
+    }
 }
