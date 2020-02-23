@@ -4,7 +4,7 @@ import com.negotium.negotiumapp.model.user.employee.Employee;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
@@ -22,11 +22,11 @@ public class HolidayRequest {
 
     @NotNull
     @Column(name = "start_date")
-    private Date startDate;
+    private OffsetDateTime startDate;
 
     @NotNull
     @Column(name = "end_date")
-    private Date endDate;
+    private OffsetDateTime endDate;
 
     @NotNull
     @Column(name = "request_status")
@@ -34,7 +34,7 @@ public class HolidayRequest {
 
     public HolidayRequest(){}
 
-    public HolidayRequest(Employee employee, Date startDate, Date endDate) {
+    public HolidayRequest(Employee employee, OffsetDateTime startDate, OffsetDateTime endDate) {
         this.employee = employee;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -56,19 +56,19 @@ public class HolidayRequest {
         this.employee = employee;
     }
 
-    public Date getStartDate() {
+    public OffsetDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(OffsetDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public OffsetDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(OffsetDateTime endDate) {
         this.endDate = endDate;
     }
 
