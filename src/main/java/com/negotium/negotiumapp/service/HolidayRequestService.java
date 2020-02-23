@@ -2,9 +2,13 @@ package com.negotium.negotiumapp.service;
 
 import com.negotium.negotiumapp.exception.DuplicateRequestIdException;
 import com.negotium.negotiumapp.exception.HolidayRequestRemoveException;
+import com.negotium.negotiumapp.model.user.employee.Employee;
+import com.negotium.negotiumapp.model.user.employee.EmployeeDto;
+import com.negotium.negotiumapp.model.user.employee.EmployeeMapper;
 import com.negotium.negotiumapp.model.user.employee.request.HolidayRequest;
 import com.negotium.negotiumapp.model.user.employee.request.HolidayRequestDto;
 import com.negotium.negotiumapp.model.user.employee.request.HolidayRequestMapper;
+import com.negotium.negotiumapp.repository.EmployeeRepository;
 import com.negotium.negotiumapp.repository.HolidayRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,23 +24,33 @@ public class HolidayRequestService {
     private HolidayRequestRepository holidayRequestRepository;
 
     @Autowired
-    public HolidayRequestService(HolidayRequestRepository holidayRequestRepository) {
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    public HolidayRequestService(HolidayRequestRepository holidayRequestRepository, EmployeeRepository employeeRepository) {
         this.holidayRequestRepository = holidayRequestRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     public HolidayRequestDto addRequest(HolidayRequestDto holidayRequestDto) {
         Optional<HolidayRequest> findByRequestId = holidayRequestRepository.findById(holidayRequestDto.getId());
         findByRequestId.ifPresent(x -> {
-            throw new DuplicateRequestIdException();
+            throw new DuplicateRequestIdException("Request with this ID is already exist");
         });
+        Employee findOneEmployeeByName = employeeRepository.findOneByName(holidayRequestDto.getEmployee().getName());
+        if(findOneEmployeeByName != null){
+            holidayRequestDto.setEmployee(findOneEmployeeByName);
+        }else{
+            throw new NullPointerException("Employee not found");
+        }
         return mapAndSaveRequest(holidayRequestDto);
     }
 
-    public HolidayRequestDto updateRequest(HolidayRequestDto holidayRequestDto) {
+    public HolidayRequestDto updateRequest(HolidayRequestDto holidayRequestDto)  {
         Optional<HolidayRequest> findByRequestId = holidayRequestRepository.findById(holidayRequestDto.getId());
         findByRequestId.ifPresent(x -> {
             if (!x.equals(holidayRequestDto.getId()))
-                throw new DuplicateRequestIdException();
+                throw new DuplicateRequestIdException("Request with this ID is already exist");
         });
         return mapAndSaveRequest(holidayRequestDto);
     }
@@ -52,14 +66,27 @@ public class HolidayRequestService {
         findByRequestId.ifPresentOrElse(x -> {
             holidayRequestRepository.delete(HolidayRequestMapper.toEntity(holidayRequestDto));
         }, () -> {
-            throw new HolidayRequestRemoveException();
+            throw new HolidayRequestRemoveException("The request could not be deleted. Please try again later");
         });
     }
 
-    public List<HolidayRequestDto> findAllRequestByEmployeeName(String name){
+    public List<HolidayRequestDto> findAllByEmployeeName(String name){
         return holidayRequestRepository.findAllByEmployeeName(name)
                 .stream()
                 .map(HolidayRequestMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+
+    public List<HolidayRequestDto> findAll(){
+        return holidayRequestRepository.findAll()
+                .stream()
+                .map(HolidayRequestMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+
+    public Optional<HolidayRequestDto> findById(Long id){
+        return holidayRequestRepository.findById(id).map(HolidayRequestMapper::toDto);
     }
 }

@@ -22,7 +22,7 @@ public class EmployeeDetails {
 
     @Column(name = "email_address")
     @Size(max = 64)
-    private String email;
+    private String employeeEmail;
 
     @Column(name = "holiday")
     private double holiday;
@@ -50,7 +50,7 @@ public class EmployeeDetails {
 
     public EmployeeDetails(EmpDetailsBuilder builder) {
         this.phoneNumber = builder.phoneNumber;
-        this.email = builder.email;
+        this.employeeEmail = builder.employeeEmail;
         this.holiday = builder.holiday;
         this.hoursWorked = builder.hoursWorked;
         this.salary = builder.salary;
@@ -75,12 +75,12 @@ public class EmployeeDetails {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getEmail() {
-        return email;
+    public String getEmployeeEmail() {
+        return employeeEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmployeeEmail(String email) {
+        this.employeeEmail = email;
     }
 
     public double getHoliday() {
@@ -149,7 +149,7 @@ public class EmployeeDetails {
                 Double.compare(that.hoursWorked, hoursWorked) == 0 &&
                 Double.compare(that.salary, salary) == 0 &&
                 Objects.equals(id, that.id) &&
-                Objects.equals(email, that.email) &&
+                Objects.equals(employeeEmail, that.employeeEmail) &&
                 Objects.equals(position, that.position) &&
                 Objects.equals(contractType, that.contractType) &&
                 Objects.equals(negotiumRole, that.negotiumRole) &&
@@ -158,7 +158,7 @@ public class EmployeeDetails {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, phoneNumber, email, holiday, hoursWorked, salary, position, contractType, negotiumRole, employee);
+        return Objects.hash(id, phoneNumber, employeeEmail, holiday, hoursWorked, salary, position, contractType, negotiumRole, employee);
     }
 
     @Override
@@ -166,7 +166,7 @@ public class EmployeeDetails {
         return "EmployeeDetails{" +
                 "id=" + id +
                 ", phoneNumber=" + phoneNumber +
-                ", email='" + email + '\'' +
+                ", email='" + employeeEmail + '\'' +
                 ", holiday=" + holiday +
                 ", hoursWorked=" + hoursWorked +
                 ", salary=" + salary +

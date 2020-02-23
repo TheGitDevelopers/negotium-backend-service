@@ -5,7 +5,7 @@ import com.negotium.negotiumapp.model.user.employee.Employee;
 public class EmpDetailsBuilder implements DetailsBuilder {
 
      int phoneNumber;
-     String email;
+     String employeeEmail;
      double holiday;
      double hoursWorked;
      double salary;
@@ -20,8 +20,8 @@ public class EmpDetailsBuilder implements DetailsBuilder {
     }
 
     @Override
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmployeeEmail(String employeeEmail) {
+        this.employeeEmail = employeeEmail;
     }
 
     public void setHoliday(double holiday) {

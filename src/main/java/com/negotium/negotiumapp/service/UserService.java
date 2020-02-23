@@ -65,10 +65,11 @@ public class UserService {
     private UserDto save(UserDto user) {
         Optional<User> userByUsername = userRepository.findAllByUsername(user.getUsername());
         userByUsername.ifPresent(x -> {
-            throw new DuplicateUsernameException();
+            throw new DuplicateUsernameException("User with this username is already exists");
         });
-        userByUsername.ifPresent(x -> {
-            throw new DuplicateEmailException();
+        Optional<User> userByEmail = userRepository.findByEmail(user.getEmail());
+        userByEmail.ifPresent(x -> {
+            throw new DuplicateEmailException("User with this email address is already exists");
         });
         User userEntity = UserMapper.toEntity(user);
         User savedUser = userRepository.save(userEntity);

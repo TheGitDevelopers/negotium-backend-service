@@ -1,11 +1,7 @@
 package com.negotium.negotiumapp.service;
 
-import com.negotium.negotiumapp.exception.DuplicateEmailException;
+
 import com.negotium.negotiumapp.exception.DuplicatePersonIdNumberException;
-import com.negotium.negotiumapp.exception.DuplicateUsernameException;
-import com.negotium.negotiumapp.model.user.User;
-import com.negotium.negotiumapp.model.user.UserDto;
-import com.negotium.negotiumapp.model.user.UserMapper;
 import com.negotium.negotiumapp.model.user.employee.Employee;
 import com.negotium.negotiumapp.model.user.employee.EmployeeDto;
 import com.negotium.negotiumapp.model.user.employee.EmployeeMapper;
@@ -31,7 +27,7 @@ public class EmployeeService {
     public EmployeeDto save(EmployeeDto employeeDto){
         Optional<Employee> findByEmployeeIndex = employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
         findByEmployeeIndex.ifPresent(x -> {
-            throw new DuplicatePersonIdNumberException();
+            throw new DuplicatePersonIdNumberException("User with this person id number is already exist");
         });
         return mapAndSaveUser(employeeDto);
     }
@@ -41,7 +37,7 @@ public class EmployeeService {
         Optional<Employee> findByPersonIdNumber = employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
         findByPersonIdNumber.ifPresent(x -> {
             if(!x.getId().equals(employeeDto.getId()))
-                throw new DuplicatePersonIdNumberException();
+                throw new DuplicatePersonIdNumberException("User with this person id number is already exist");
         });
         return mapAndSaveUser(employeeDto);
     }
