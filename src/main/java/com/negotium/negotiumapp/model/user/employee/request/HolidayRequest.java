@@ -4,7 +4,7 @@ import com.negotium.negotiumapp.model.user.employee.Employee;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -22,22 +22,24 @@ public class HolidayRequest {
 
     @NotNull
     @Column(name = "start_date")
-    private OffsetDateTime startDate;
+    private LocalDateTime startDate;
 
     @NotNull
     @Column(name = "end_date")
-    private OffsetDateTime endDate;
+    private LocalDateTime endDate;
 
     @NotNull
     @Column(name = "request_status")
     private RequestStatus requestStatus;
 
-    public HolidayRequest(){}
+    public HolidayRequest() {
+    }
 
-    public HolidayRequest(Employee employee, OffsetDateTime startDate, OffsetDateTime endDate) {
+    public HolidayRequest(Employee employee, @NotNull LocalDateTime startDate, @NotNull LocalDateTime endDate, @NotNull RequestStatus requestStatus) {
         this.employee = employee;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.requestStatus = requestStatus;
     }
 
     public Long getId() {
@@ -56,19 +58,19 @@ public class HolidayRequest {
         this.employee = employee;
     }
 
-    public OffsetDateTime getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(OffsetDateTime startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public OffsetDateTime getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(OffsetDateTime endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
@@ -81,27 +83,30 @@ public class HolidayRequest {
     }
 
     @Override
-    public String toString() {
-        return "HolidayRequest{" +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", requestStatus=" + requestStatus +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof HolidayRequest)) return false;
         HolidayRequest that = (HolidayRequest) o;
-        return Objects.equals(employee, that.employee) &&
-                Objects.equals(startDate, that.startDate) &&
-                Objects.equals(endDate, that.endDate) &&
+        return id.equals(that.id) &&
+                employee.equals(that.employee) &&
+                startDate.equals(that.startDate) &&
+                endDate.equals(that.endDate) &&
                 requestStatus == that.requestStatus;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(employee, startDate, endDate, requestStatus);
+        return Objects.hash(id, employee, startDate, endDate, requestStatus);
+    }
+
+    @Override
+    public String toString() {
+        return "HolidayRequest{" +
+                "id=" + id +
+                ", employee=" + employee +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", requestStatus=" + requestStatus +
+                '}';
     }
 }
