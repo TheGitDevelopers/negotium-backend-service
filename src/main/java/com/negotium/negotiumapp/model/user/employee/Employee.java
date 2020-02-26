@@ -24,7 +24,7 @@ public class Employee {
     @NotNull
     private String name;
 
-    @Column(name = "employee_index")
+    @Column(name = "employee_index", unique = true)
     private int employeeIndex;
 
     @JsonIgnore
