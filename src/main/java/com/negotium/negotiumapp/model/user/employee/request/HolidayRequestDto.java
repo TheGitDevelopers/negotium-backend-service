@@ -2,21 +2,21 @@ package com.negotium.negotiumapp.model.user.employee.request;
 
 import com.negotium.negotiumapp.model.user.employee.Employee;
 
-import java.time.OffsetDateTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class HolidayRequestDto {
 
     private Long id;
     private Employee employee;
-    private OffsetDateTime startDate;
-    private OffsetDateTime endDate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
     private RequestStatus requestStatus;
 
     public HolidayRequestDto() {
     }
 
-    public HolidayRequestDto(Long id, Employee employee, OffsetDateTime startDate, OffsetDateTime endDate, RequestStatus requestStatus) {
+    public HolidayRequestDto(Long id, Employee employee, LocalDateTime startDate, LocalDateTime endDate, RequestStatus requestStatus) {
         this.id = id;
         this.employee = employee;
         this.startDate = startDate;
@@ -40,19 +40,19 @@ public class HolidayRequestDto {
         this.employee = employee;
     }
 
-    public OffsetDateTime getStartDate() {
+    public LocalDateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(OffsetDateTime startDate) {
+    public void setStartDate(LocalDateTime startDate) {
         this.startDate = startDate;
     }
 
-    public OffsetDateTime getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(OffsetDateTime endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 
