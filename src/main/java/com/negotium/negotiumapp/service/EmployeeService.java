@@ -1,6 +1,5 @@
 package com.negotium.negotiumapp.service;
 
-
 import com.negotium.negotiumapp.exception.DuplicatePersonIdNumberException;
 import com.negotium.negotiumapp.model.user.employee.Employee;
 import com.negotium.negotiumapp.model.user.employee.EmployeeDto;
@@ -22,7 +21,6 @@ public class EmployeeService {
     public EmployeeService(EmployeeRepository employeeRepository){
         this.employeeRepository = employeeRepository;
     }
-
 
     public EmployeeDto save(EmployeeDto employeeDto){
         Optional<Employee> findByEmployeeIndex = employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());

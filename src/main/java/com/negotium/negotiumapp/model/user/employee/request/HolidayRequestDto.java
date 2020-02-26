@@ -3,6 +3,7 @@ package com.negotium.negotiumapp.model.user.employee.request;
 import com.negotium.negotiumapp.model.user.employee.Employee;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Objects;
 
 public class HolidayRequestDto {

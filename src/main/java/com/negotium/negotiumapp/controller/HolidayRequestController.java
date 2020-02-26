@@ -36,7 +36,6 @@ public class HolidayRequestController {
       return  holidayRequestService.findAll();
     }
 
-
     @GetMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HolidayRequestDto> findById(@PathVariable Long id){
         return holidayRequestService.findById(id)
@@ -51,5 +50,15 @@ public class HolidayRequestController {
       }
         HolidayRequestDto updateRequest = holidayRequestService.updateRequest(holidayRequestDto);
       return ResponseEntity.ok(updateRequest);
+    }
+
+    @DeleteMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity delete(@PathVariable Long id){
+        if(!holidayRequestService.findById(id).isPresent()){
+            System.err.println("Id " + id + " is not existed");
+            ResponseEntity.badRequest().build();
+        }
+        holidayRequestService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }
