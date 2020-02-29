@@ -24,7 +24,7 @@ public class HolidayRequestController {
 
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HolidayRequestDto> save(@RequestBody HolidayRequestDto holidayRequestDto) {
-        HolidayRequestDto savedRequest = holidayRequestService.addRequest(holidayRequestDto);
+        HolidayRequestDto savedRequest = holidayRequestService.saveRequest(holidayRequestDto);
         return ResponseEntity.ok(savedRequest);
     }
 

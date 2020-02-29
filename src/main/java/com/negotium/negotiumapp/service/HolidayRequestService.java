@@ -30,28 +30,33 @@ public class HolidayRequestService {
         this.employeeRepository = employeeRepository;
     }
 
-    public HolidayRequestDto addRequest(HolidayRequestDto holidayRequestDto) {
+    public HolidayRequestDto saveRequest(HolidayRequestDto holidayRequestDto) {
         Optional<HolidayRequest> findByRequestId = holidayRequestRepository.findById(holidayRequestDto.getId());
         findByRequestId.ifPresent(x -> {
             throw new DuplicateRequestIdException("Request with this ID is already exist");
         });
-        Optional<Employee> findOneEmployeeByName = employeeRepository
+        Optional<Employee> findOneEmployeeByIndex = employeeRepository
                 .findByEmployeeIndex(holidayRequestDto.getEmployee().getEmployeeIndex());
-        findOneEmployeeByName.ifPresentOrElse(
+        findOneEmployeeByIndex.ifPresentOrElse(
                 holidayRequestDto::setEmployee,
                 () -> {
                     throw new NullPointerException("Employee not found");
                 }
         );
-
         return mapAndSaveRequest(holidayRequestDto);
     }
 
     public HolidayRequestDto updateRequest(HolidayRequestDto holidayRequestDto) {
-        Optional<HolidayRequest> findByRequestId = holidayRequestRepository.findById(holidayRequestDto.getId());
-        findByRequestId.ifPresent(x -> {
-            if (!(x.getId()).equals(holidayRequestDto.getId()))
+        Long id = holidayRequestDto.getId();
+        Optional<HolidayRequest> foundByRequestId =
+                holidayRequestRepository.findById(id);
+        if (foundByRequestId.isEmpty()) {
+            throw new NullPointerException("Request not found");
+        }
+        foundByRequestId.ifPresent(x -> {
+            if (!(x.getId()).equals(id)) {
                 throw new DuplicateRequestIdException("Request with this ID is already exist");
+            }
         });
         return mapAndSaveRequest(holidayRequestDto);
     }
