@@ -15,9 +15,15 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -48,9 +54,8 @@ class HolidayRequestServiceTest {
                 .willReturn(Optional.of(entity.getEmployee()));
         given(holidayRequestRepository.save(any(HolidayRequest.class))).willReturn(entity);
 
-
         //when
-        HolidayRequestDto savedDTO = requestService.addRequest(HolidayRequestMapper.toDto(entity));
+        HolidayRequestDto savedDTO = requestService.saveRequest(HolidayRequestMapper.toDto(entity));
 
         //then
         assertEquals(entity.getId(), savedDTO.getId());
@@ -60,10 +65,33 @@ class HolidayRequestServiceTest {
 
     @Test
     void updateRequest() {
-        //given
+//        given
+        HolidayRequest entity = getTestRequest(nameTEST, idTEST, emailTEST);
+        String originalStartDate = entity.getStartDate().format(DateTimeFormatter.BASIC_ISO_DATE);
+        String originalEndDate = entity.getEndDate().format(DateTimeFormatter.BASIC_ISO_DATE);
 
-        //when
-        //then
+        given(employeeRepository.findByEmployeeIndex(any(Integer.class)))
+                .willReturn(Optional.of(entity.getEmployee()));
+        given(holidayRequestRepository.save(any(HolidayRequest.class))).willReturn(entity);
+        HolidayRequest updatedEntity = getTestRequest("New Name", idTEST, emailTEST);
+        updatedEntity.setStartDate(LocalDateTime.now());
+        updatedEntity.setEndDate((LocalDateTime.now()).plus(10, ChronoUnit.DAYS));
+
+        given(employeeRepository.findByEmployeeIndex(any(Integer.class)))
+                .willReturn(Optional.of(updatedEntity.getEmployee()));
+        given(holidayRequestRepository.save(any(HolidayRequest.class))).willReturn(updatedEntity);
+//        when
+        HolidayRequestDto savedDTO = requestService.saveRequest(HolidayRequestMapper.toDto(entity));
+
+        HolidayRequestDto updatedDTO = requestService.updateRequest(HolidayRequestMapper.toDto(updatedEntity));
+
+//        that
+        assertNotNull(updatedDTO);
+        assertThat(savedDTO.getEmployee().getName(), equalTo(updatedDTO.getEmployee().getName()));
+        assertThat(originalEndDate, not(equalTo(updatedDTO.getEndDate().format(DateTimeFormatter.BASIC_ISO_DATE))));
+        assertThat(originalStartDate, not(equalTo(updatedDTO.getStartDate().format(DateTimeFormatter.BASIC_ISO_DATE))));
+
+
     }
 
     @Test

@@ -30,63 +30,72 @@ public class HolidayRequestService {
         this.employeeRepository = employeeRepository;
     }
 
-    public HolidayRequestDto addRequest(HolidayRequestDto holidayRequestDto) {
+    public HolidayRequestDto saveRequest(HolidayRequestDto holidayRequestDto) {
         Optional<HolidayRequest> findByRequestId = holidayRequestRepository.findById(holidayRequestDto.getId());
         findByRequestId.ifPresent(x -> {
             throw new DuplicateRequestIdException("Request with this ID is already exist");
         });
-        Employee findOneEmployeeByName = employeeRepository.findOneByName(holidayRequestDto.getEmployee().getName());
-        if(findOneEmployeeByName != null){
-            holidayRequestDto.setEmployee(findOneEmployeeByName);
-        }else{
-            throw new NullPointerException("Employee not found");
-        }
+        Optional<Employee> findOneEmployeeByIndex = employeeRepository
+                .findByEmployeeIndex(holidayRequestDto.getEmployee().getEmployeeIndex());
+        findOneEmployeeByIndex.ifPresentOrElse(
+                holidayRequestDto::setEmployee,
+                () -> {
+                    throw new NullPointerException("Employee not found");
+                }
+        );
         return mapAndSaveRequest(holidayRequestDto);
     }
 
-    public HolidayRequestDto updateRequest(HolidayRequestDto holidayRequestDto)  {
-        Optional<HolidayRequest> findByRequestId = holidayRequestRepository.findById(holidayRequestDto.getId());
-        findByRequestId.ifPresent(x -> {
-            if (!x.equals(holidayRequestDto.getId()))
+    public HolidayRequestDto updateRequest(HolidayRequestDto holidayRequestDto) {
+        Long id = holidayRequestDto.getId();
+        Optional<HolidayRequest> foundByRequestId =
+                holidayRequestRepository.findById(id);
+        if (foundByRequestId.isEmpty()) {
+            throw new NullPointerException("Request not found");
+        }
+        foundByRequestId.ifPresent(x -> {
+            if (!(x.getId()).equals(id)) {
                 throw new DuplicateRequestIdException("Request with this ID is already exist");
+            }
         });
         return mapAndSaveRequest(holidayRequestDto);
     }
 
-    private HolidayRequestDto mapAndSaveRequest(HolidayRequestDto holidayRequestDto){
+    private HolidayRequestDto mapAndSaveRequest(HolidayRequestDto holidayRequestDto) {
         HolidayRequest holidayRequestEntity = HolidayRequestMapper.toEntity(holidayRequestDto);
         HolidayRequest savedRequest = holidayRequestRepository.save(holidayRequestEntity);
         return HolidayRequestMapper.toDto(savedRequest);
     }
 
-    public void removeRequest(HolidayRequestDto holidayRequestDto){
+    public void removeRequest(HolidayRequestDto holidayRequestDto) {
         Optional<HolidayRequest> findByRequestId = holidayRequestRepository.findById(holidayRequestDto.getId());
-        findByRequestId.ifPresentOrElse(x -> {
-            holidayRequestRepository.delete(HolidayRequestMapper.toEntity(holidayRequestDto));
-        }, () -> {
-            throw new HolidayRequestRemoveException("The request could not be deleted. Please try again later");
-        });
+        findByRequestId.ifPresentOrElse(x ->
+                        holidayRequestRepository
+                                .delete(HolidayRequestMapper
+                                        .toEntity(holidayRequestDto)),
+                () -> {
+                    throw new HolidayRequestRemoveException(
+                            "The request could not be deleted. Please try again later");
+                });
     }
 
-    public List<HolidayRequestDto> findAllByEmployeeName(String name){
+    public List<HolidayRequestDto> findAllByEmployeeName(String name) {
         return holidayRequestRepository.findAllByEmployeeName(name)
                 .stream()
                 .map(HolidayRequestMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public void deleteById(Long id){
-        holidayRequestRepository.deleteById(id);
-    }
 
-    public List<HolidayRequestDto> findAll(){
+    public List<HolidayRequestDto> findAll() {
         return holidayRequestRepository.findAll()
                 .stream()
                 .map(HolidayRequestMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public Optional<HolidayRequestDto> findById(Long id){
+
+    public Optional<HolidayRequestDto> findById(Long id) {
         return holidayRequestRepository.findById(id).map(HolidayRequestMapper::toDto);
     }
 }
