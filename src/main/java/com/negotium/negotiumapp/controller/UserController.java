@@ -37,7 +37,23 @@ public class UserController {
     }
 
     @GetMapping(path = "/findAll", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public List<UserDto> findAll(){
+    public List<UserDto> findAll(@RequestParam(required = false) String username) {
+        if (username != null) {
+            return userService.findAllByUsername(username);
+        }
         return userService.findAll();
+    }
+
+    @GetMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> findById(@PathVariable Long id) {
+        return userService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity deleteUser(@PathVariable Long id) {
+        userService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }
