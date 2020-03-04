@@ -67,12 +67,11 @@ public class HolidayRequestService {
         return HolidayRequestMapper.toDto(savedRequest);
     }
 
-    public void removeRequest(HolidayRequestDto holidayRequestDto) {
-        Optional<HolidayRequest> findByRequestId = holidayRequestRepository.findById(holidayRequestDto.getId());
+    public void deleteById(Long id) {
+        Optional<HolidayRequest> findByRequestId = holidayRequestRepository.findById(id);
         findByRequestId.ifPresentOrElse(x ->
                         holidayRequestRepository
-                                .delete(HolidayRequestMapper
-                                        .toEntity(holidayRequestDto)),
+                                .deleteById(id),
                 () -> {
                     throw new HolidayRequestRemoveException(
                             "The request could not be deleted. Please try again later");
