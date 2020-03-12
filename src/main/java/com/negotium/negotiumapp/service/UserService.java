@@ -52,10 +52,15 @@ public class UserService {
     }
 
     private UserDto save(UserDto user) {
-        Optional<User> userByUsername = userRepository.findAllByUsername(user.getUsername());
-        userByUsername.ifPresent(x -> {
-            throw new DuplicateUsernameException("User with this username is already exists");
-        });
+        List<User> userByUsername = userRepository.findByUsernameContaining(user.getUsername());
+        for (User e : userByUsername) {
+            if (e.getUsername().equals(user.getUsername())) {
+                throw new DuplicateUsernameException("User with this username is already exists");
+            }
+        }
+//        userByUsername.ifPresent(x -> {
+//            throw new DuplicateUsernameException("User with this username is already exists");
+//        });
         Optional<User> userByEmail = userRepository.findByEmail(user.getEmail());
         userByEmail.ifPresent(x -> {
             throw new DuplicateEmailException("User with this email address is already exists");
@@ -73,8 +78,9 @@ public class UserService {
     }
 
     public List<UserDto> findAllByUsername(String username) {
-        return userRepository.findAllByUsername(username)
+        return userRepository.findByUsernameContaining(username)
                 .stream()
+                .filter(x -> x.getUsername().contains(username))
                 .map(UserMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -83,12 +89,16 @@ public class UserService {
         return userRepository.findById(id).map(UserMapper::toDto);
     }
 
-    public void deleteById(Long id) {
+    public Boolean deleteById(Long id) {
+        Boolean isUserDelete;
         Optional<User> userToDelete = userRepository.findById(id);
         userToDelete.ifPresentOrElse(x ->
                         userRepository.deleteById(id),
-                () -> {
-                    throw new UserNotFoundException("User not found");
-                });
+        () -> {
+            throw new UserNotFoundException("User not found");
+        });
+        isUserDelete = true;
+        return isUserDelete;
     }
 }
+
