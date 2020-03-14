@@ -58,9 +58,6 @@ public class UserService {
                 throw new DuplicateUsernameException("User with this username is already exists");
             }
         }
-//        userByUsername.ifPresent(x -> {
-//            throw new DuplicateUsernameException("User with this username is already exists");
-//        });
         Optional<User> userByEmail = userRepository.findByEmail(user.getEmail());
         userByEmail.ifPresent(x -> {
             throw new DuplicateEmailException("User with this email address is already exists");
@@ -101,4 +98,3 @@ public class UserService {
         return isUserDelete;
     }
 }
-
