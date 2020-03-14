@@ -55,7 +55,7 @@ public class HolidayRequestService {
         }
         foundByRequestId.ifPresent(x -> {
             if (!(x.getId()).equals(id)) {
-                throw new DuplicateRequestIdException("Request with this ID is already exist");
+                throw new DuplicateRequestIdException("Request with this ID does not exist");
             }
         });
         return mapAndSaveRequest(holidayRequestDto);

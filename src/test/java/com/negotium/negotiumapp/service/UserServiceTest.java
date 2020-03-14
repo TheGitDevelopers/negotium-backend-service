@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -67,11 +66,7 @@ public class UserServiceTest {
         //given
         List<User> users = getUsers();
         String name = "Mi";
-        given(userRepository.findByUsernameContaining(any(String.class)))
-                .willReturn(
-                        users.stream()
-                                .filter(user -> user.getUsername().contains(name))
-                                .collect(Collectors.toList()));
+        given(userRepository.findByUsernameContaining(any(String.class))).willReturn(users);
         //when
         List<UserDto> usersToFound = userService.findAllByUsername(name);
         //then
