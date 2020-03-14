@@ -5,20 +5,20 @@ import com.negotium.negotiumapp.model.user.UserDto;
 import com.negotium.negotiumapp.model.user.UserMapper;
 import com.negotium.negotiumapp.repository.UserRepository;
 import com.negotium.negotiumapp.repository.UserRoleRepository;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-@RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
     private static final String DEFAULT_ROLE = "ROLE_USER";
 
@@ -63,11 +63,15 @@ public class UserServiceTest {
     }
 
     @Test
-    public void find_all_by_username(){
+    public void find_all_by_username() {
         //given
         List<User> users = getUsers();
         String name = "Mi";
-        given(userRepository.findByUsernameContaining(any(String.class))).willReturn(users);
+        given(userRepository.findByUsernameContaining(any(String.class)))
+                .willReturn(
+                        users.stream()
+                                .filter(user -> user.getUsername().contains(name))
+                                .collect(Collectors.toList()));
         //when
         List<UserDto> usersToFound = userService.findAllByUsername(name);
         //then
@@ -81,7 +85,7 @@ public class UserServiceTest {
         List<User> users = getUsers();
         given(userRepository.findById(any(Long.class))).willReturn(Optional.of(users.get(0)));
         //when
-        Optional<UserDto> userDto = userService.findById(1l);
+        Optional<UserDto> userDto = userService.findById(1L);
         //then
         assertEquals("Mike", userDto.get().getUsername());
     }

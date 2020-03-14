@@ -17,7 +17,10 @@ import org.mockito.MockitoAnnotations;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -90,8 +93,6 @@ class HolidayRequestServiceTest {
         assertThat(savedDTO.getEmployee().getName(), equalTo(updatedDTO.getEmployee().getName()));
         assertThat(originalEndDate, not(equalTo(updatedDTO.getEndDate().format(DateTimeFormatter.BASIC_ISO_DATE))));
         assertThat(originalStartDate, not(equalTo(updatedDTO.getStartDate().format(DateTimeFormatter.BASIC_ISO_DATE))));
-
-
     }
 
     @Test
@@ -100,14 +101,47 @@ class HolidayRequestServiceTest {
 
     @Test
     void findAllByEmployeeName() {
+        //given
+        List<HolidayRequest> requests = getRequests();
+        String searchfor = "immy";
+        given(holidayRequestRepository.findAllByEmployeeName(any(String.class))).willReturn(
+                requests.stream()
+                        .filter(request ->
+                                request.getEmployee()
+                                        .getName().contains(searchfor))
+                        .collect(Collectors.toList()));
+
+        //when
+        List<HolidayRequestDto> requestDtos = requestService
+                .findAllByEmployeeName(searchfor);
+
+        assertEquals(2, requestDtos.size());
     }
 
     @Test
     void findAll() {
+        //given
+        List<HolidayRequest> requests = getRequests();
+        given(holidayRequestRepository.findAll()).willReturn(requests);
+        //when
+        List<HolidayRequestDto> requestDtos = requestService.findAll();
+
+        //then
+        assertEquals(4, requestDtos.size());
     }
 
     @Test
     void findById() {
+        //given
+        HolidayRequest request = getTestRequest(nameTEST, idTEST, emailTEST);
+        given(holidayRequestRepository.findById(any(Long.class))).willReturn(Optional.of(request));
+
+        //when
+        Optional<HolidayRequestDto> optionalHolidayRequestDto = requestService.findById(idTEST);
+
+        //then
+        assertEquals(nameTEST, optionalHolidayRequestDto.get().getEmployee().getName());
+        assertEquals(idTEST, optionalHolidayRequestDto.get().getEmployee().getId());
     }
 
     private HolidayRequest getTestRequest(String name, long id, String email) {
@@ -140,5 +174,14 @@ class HolidayRequestServiceTest {
 
         employee.setEmployeeDetails(details);
         return employee;
+    }
+
+    private List<HolidayRequest> getRequests() {
+        List<HolidayRequest> requests = new ArrayList<>();
+        requests.add(getTestRequest(nameTEST, idTEST, emailTEST));
+        requests.add(getTestRequest("Timmy", 5L, "timmy@negotium.com"));
+        requests.add(getTestRequest("John", 3L, "johnny@negotium.com"));
+        requests.add(getTestRequest("James", 4L, "james@negotium.com"));
+        return requests;
     }
 }
