@@ -1,6 +1,8 @@
 package com.negotium.negotiumapp.service;
 
-import com.negotium.negotiumapp.exception.*;
+import com.negotium.negotiumapp.exception.DuplicateEmailException;
+import com.negotium.negotiumapp.exception.DuplicateUsernameException;
+import com.negotium.negotiumapp.exception.UserNotFoundException;
 import com.negotium.negotiumapp.model.user.User;
 import com.negotium.negotiumapp.model.user.UserDto;
 import com.negotium.negotiumapp.model.user.UserMapper;
@@ -91,9 +93,9 @@ public class UserService {
         Optional<User> userToDelete = userRepository.findById(id);
         userToDelete.ifPresentOrElse(x ->
                         userRepository.deleteById(id),
-        () -> {
-            throw new UserNotFoundException("User not found");
-        });
+                () -> {
+                    throw new UserNotFoundException("User not found");
+                });
         isUserDelete = true;
         return isUserDelete;
     }
