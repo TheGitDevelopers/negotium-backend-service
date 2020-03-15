@@ -2,6 +2,7 @@ package com.negotium.negotiumapp.model.warehouse;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
@@ -9,7 +10,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product")
+@Table(name = "PRODUCT")
+@SecondaryTable(name = "PARENT_PRODUCT")
 public class Product extends AbstractProduct {
 
     @NotNull
@@ -67,6 +69,11 @@ public class Product extends AbstractProduct {
     @Override
     public Long getId() {
         return super.getId();
+    }
+
+    @Override
+    protected void setId(Long id) {
+        super.setId(id);
     }
 
     @Override

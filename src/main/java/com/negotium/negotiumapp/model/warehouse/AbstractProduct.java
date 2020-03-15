@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class AbstractProduct implements Comparable<AbstractProduct> {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_product")
     private Long id;
 
@@ -46,7 +46,7 @@ public abstract class AbstractProduct implements Comparable<AbstractProduct> {
         return id;
     }
 
-    void setId(Long id) {
+    protected void setId(Long id) {
         this.id = id;
     }
 
