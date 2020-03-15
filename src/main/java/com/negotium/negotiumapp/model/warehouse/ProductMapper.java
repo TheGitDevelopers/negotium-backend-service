@@ -6,6 +6,7 @@ public class ProductMapper {
         ProductDto dto = new ProductDto();
         dto.setId(product.getId());
         dto.setName(product.getName());
+        dto.setProductIndex(product.getProductIndex());
         dto.setStatus(product.getStatus());
         dto.setPrice(product.getPrice());
         dto.setTotal_price(product.getTotal_price());
@@ -18,6 +19,7 @@ public class ProductMapper {
     public static Product toEntity(ProductDto product) {
         Product entity = new Product(
                 product.getName(),
+                product.getProductIndex(),
                 product.getPrice(),
                 product.getQuantityStock(),
                 product.getStatus());

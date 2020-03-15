@@ -9,6 +9,7 @@ public class ProductDto {
     protected LocalDateTime expiryDate;
     private Long id;
     private String name;
+    private int productIndex;
     private ProductStatus status;
     private double price;
     private BigDecimal total_price;
@@ -17,9 +18,10 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    public ProductDto(Long id, String name, ProductStatus status, double price, BigDecimal total_price, int quantityStock, LocalDateTime expiryDate) {
+    public ProductDto(Long id, String name, int productIndex, ProductStatus status, double price, BigDecimal total_price, int quantityStock, LocalDateTime expiryDate) {
         this.id = id;
         this.name = name;
+        this.productIndex = productIndex;
         this.status = status;
         this.price = price;
         this.total_price = total_price;
@@ -41,6 +43,14 @@ public class ProductDto {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getProductIndex() {
+        return productIndex;
+    }
+
+    public void setProductIndex(int productIndex) {
+        this.productIndex = productIndex;
     }
 
     public ProductStatus getStatus() {

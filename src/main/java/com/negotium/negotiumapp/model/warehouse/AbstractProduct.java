@@ -5,24 +5,27 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "product")
-public abstract class AbstractProduct implements Comparable<AbstractProduct> {//    Produkt ma zawierać
+@MappedSuperclass
+public abstract class AbstractProduct implements Comparable<AbstractProduct> {
 
-    @NotNull
-    @Column(name = "expiry_date")
-    protected LocalDateTime expiryDate;
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     @Column(name = "id_product")
     private Long id;
+
     @Column(name = "price_product")
     private double price;
+
     @NotNull
     @Column(name = "totalprice_product")
     private BigDecimal total_price;
+
     @Column(name = "quantity_product")
     private int quantityStock;
+
+    @NotNull
+    @Column(name = "expiry_date")
+    protected LocalDateTime expiryDate;
 
     public AbstractProduct() {
     }
