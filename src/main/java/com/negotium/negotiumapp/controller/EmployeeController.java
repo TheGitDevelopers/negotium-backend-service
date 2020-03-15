@@ -1,6 +1,6 @@
 package com.negotium.negotiumapp.controller;
 
-import com.negotium.negotiumapp.model.user.employee.EmployeeDto;
+import com.negotium.negotiumapp.model.employee.EmployeeDto;
 import com.negotium.negotiumapp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

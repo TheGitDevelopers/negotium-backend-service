@@ -1,10 +1,10 @@
 package com.negotium.negotiumapp.service;
 
-import com.negotium.negotiumapp.model.user.employee.Employee;
-import com.negotium.negotiumapp.model.user.employee.EmployeeDto;
-import com.negotium.negotiumapp.model.user.employee.EmployeeMapper;
-import com.negotium.negotiumapp.model.user.employee.details.EmpDetailsBuilder;
-import com.negotium.negotiumapp.model.user.employee.details.EmployeeDetails;
+import com.negotium.negotiumapp.model.employee.Employee;
+import com.negotium.negotiumapp.model.employee.EmployeeDto;
+import com.negotium.negotiumapp.model.employee.EmployeeMapper;
+import com.negotium.negotiumapp.model.employee.details.EmpDetailsBuilder;
+import com.negotium.negotiumapp.model.employee.details.EmployeeDetails;
 import com.negotium.negotiumapp.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

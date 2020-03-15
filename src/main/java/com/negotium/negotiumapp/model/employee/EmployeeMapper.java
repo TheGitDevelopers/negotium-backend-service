@@ -1,4 +1,4 @@
-package com.negotium.negotiumapp.model.user.employee;
+package com.negotium.negotiumapp.model.employee;
 
 public class EmployeeMapper {
 

@@ -1,6 +1,6 @@
 package com.negotium.negotiumapp.repository;
 
-import com.negotium.negotiumapp.model.user.employee.Employee;
+import com.negotium.negotiumapp.model.employee.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

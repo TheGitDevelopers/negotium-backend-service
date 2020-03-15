@@ -1,7 +1,7 @@
-package com.negotium.negotiumapp.model.user.employee;
+package com.negotium.negotiumapp.model.employee;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.negotium.negotiumapp.model.user.employee.details.EmployeeDetails;
+import com.negotium.negotiumapp.model.employee.details.EmployeeDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

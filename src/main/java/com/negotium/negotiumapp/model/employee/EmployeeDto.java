@@ -1,6 +1,6 @@
-package com.negotium.negotiumapp.model.user.employee;
+package com.negotium.negotiumapp.model.employee;
 
-import com.negotium.negotiumapp.model.user.employee.details.EmployeeDetails;
+import com.negotium.negotiumapp.model.employee.details.EmployeeDetails;
 
 import java.util.Objects;
 

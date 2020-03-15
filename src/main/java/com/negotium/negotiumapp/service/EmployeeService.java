@@ -1,14 +1,9 @@
 package com.negotium.negotiumapp.service;
 
-import com.negotium.negotiumapp.exception.DuplicateEmailException;
 import com.negotium.negotiumapp.exception.DuplicatePersonIdNumberException;
-import com.negotium.negotiumapp.exception.DuplicateUsernameException;
-import com.negotium.negotiumapp.model.user.User;
-import com.negotium.negotiumapp.model.user.UserDto;
-import com.negotium.negotiumapp.model.user.UserMapper;
-import com.negotium.negotiumapp.model.user.employee.Employee;
-import com.negotium.negotiumapp.model.user.employee.EmployeeDto;
-import com.negotium.negotiumapp.model.user.employee.EmployeeMapper;
+import com.negotium.negotiumapp.model.employee.Employee;
+import com.negotium.negotiumapp.model.employee.EmployeeDto;
+import com.negotium.negotiumapp.model.employee.EmployeeMapper;
 import com.negotium.negotiumapp.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

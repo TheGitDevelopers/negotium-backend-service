@@ -1,6 +1,6 @@
-package com.negotium.negotiumapp.model.user.employee.details;
+package com.negotium.negotiumapp.model.employee.details;
 
-import com.negotium.negotiumapp.model.user.employee.Employee;
+import com.negotium.negotiumapp.model.employee.Employee;
 
 public interface DetailsBuilder {
 
