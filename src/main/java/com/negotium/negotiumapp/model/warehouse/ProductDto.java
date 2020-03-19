@@ -1,6 +1,5 @@
 package com.negotium.negotiumapp.model.warehouse;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -12,13 +11,13 @@ public class ProductDto {
     private int productIndex;
     private ProductStatus status;
     private double price;
-    private BigDecimal total_price;
+    private Double total_price;
     private int quantityStock;
 
     public ProductDto() {
     }
 
-    public ProductDto(Long id, String name, int productIndex, ProductStatus status, double price, BigDecimal total_price, int quantityStock, LocalDateTime expiryDate) {
+    public ProductDto(Long id, String name, int productIndex, ProductStatus status, double price, Double total_price, int quantityStock, LocalDateTime expiryDate) {
         this.id = id;
         this.name = name;
         this.productIndex = productIndex;
@@ -69,11 +68,11 @@ public class ProductDto {
         this.price = price;
     }
 
-    public BigDecimal getTotal_price() {
+    public Double getTotal_price() {
         return total_price;
     }
 
-    public void setTotal_price(BigDecimal total_price) {
+    public void setTotal_price(Double total_price) {
         this.total_price = total_price;
     }
 
