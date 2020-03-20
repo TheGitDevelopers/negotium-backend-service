@@ -36,7 +36,6 @@ public class ProductList {
         return 0;
     }
 
-    // to jest typowy getter
     public Product getItemfromStock(int key) {
         return list.get(key);
     }
