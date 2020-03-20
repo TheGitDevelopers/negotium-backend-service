@@ -129,7 +129,7 @@ public class Product extends AbstractProduct {
     @Override
     public String toString() {
         return "Product{" +
-                "id = " + super.getId() +
+                "index = " + this.productIndex +
                 "\t name = " + this.name +
                 "\t status = " + this.status +
                 "\t price = " + super.getPrice() +
