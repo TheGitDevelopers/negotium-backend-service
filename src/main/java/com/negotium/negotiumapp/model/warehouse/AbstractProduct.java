@@ -106,10 +106,10 @@ public abstract class AbstractProduct implements Comparable<Product> {
     }
 
     private boolean isFresh() {
-        return !(this.expiryDate.isAfter(LocalDateTime.now()));
+        return !(this.expiryDate.isBefore(LocalDateTime.now()));
     }
 
     private boolean isFresh(LocalDateTime newExpiryDate) {
-        return !(newExpiryDate.isAfter(LocalDateTime.now()));
+        return !(newExpiryDate.isBefore(LocalDateTime.now()));
     }
 }

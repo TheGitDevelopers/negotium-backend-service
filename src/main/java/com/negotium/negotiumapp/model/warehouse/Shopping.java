@@ -10,7 +10,6 @@ public class Shopping {
         stockList.addStock(temp);
 
         temp = new Product("Water 1,5L bottle", 2, 1.7, 100);
-
         stockList.addStock(temp);
 
         temp = new Product("Tomato per item", 3, 1.5, 300);
