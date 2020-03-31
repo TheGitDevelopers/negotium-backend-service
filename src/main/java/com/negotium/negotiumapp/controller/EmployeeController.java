@@ -1,6 +1,7 @@
 package com.negotium.negotiumapp.controller;
 
 import com.negotium.negotiumapp.model.employee.EmployeeDto;
+import com.negotium.negotiumapp.security.SecurityConstans;
 import com.negotium.negotiumapp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/employee")
+@RequestMapping(SecurityConstans.API_EMPLOYEE)
 public class EmployeeController {
     private EmployeeService employeeService;
 

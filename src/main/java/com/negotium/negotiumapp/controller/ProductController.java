@@ -1,6 +1,7 @@
 package com.negotium.negotiumapp.controller;
 
 import com.negotium.negotiumapp.model.warehouse.ProductDto;
+import com.negotium.negotiumapp.security.SecurityConstans;
 import com.negotium.negotiumapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping(SecurityConstans.API_PRODUCTS)
 public class ProductController {
     private ProductService productService;
 
@@ -23,7 +24,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(path = "findAll", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/findAll", consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<ProductDto> findAll(@RequestParam(required = false) String name) {
         if (name != null) {
             return productService.findAllByNameContaining(name);
@@ -46,6 +47,7 @@ public class ProductController {
         return ResponseEntity.created(location).body(savedProduct);
     }
 
+    @GetMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDto> findById(@PathVariable Long id) {
         return productService.findById(id)
                 .map(ResponseEntity::ok)

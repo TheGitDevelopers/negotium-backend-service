@@ -50,7 +50,7 @@ public class ProductService {
                 });
     }
 
-    public void deleteByProductIndex(int index) {
+    public void deleteByProductIndex(Integer index) {
         Optional<Product> foundProductByIndex = productRepository.findByProductIndex(index);
         foundProductByIndex.ifPresentOrElse(
                 product -> productRepository.deleteProductByProductIndex(index),

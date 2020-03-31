@@ -29,14 +29,14 @@ public class Product extends AbstractProduct {
         super();
     }
 
-    public Product(@NotNull String name, int productIndex, double price) {
+    public Product(@NotNull String name, Integer productIndex, double price) {
         super(price);
         this.name = name;
         this.productIndex = productIndex;
         this.status = ProductStatus.TEMPORARY;
     }
 
-    public Product(@NotNull String name, int productIndex, double price,
+    public Product(@NotNull String name, Integer productIndex, double price,
                    int quantityStock) {
         super(price, quantityStock);
         this.name = name;
@@ -44,7 +44,7 @@ public class Product extends AbstractProduct {
         this.status = ProductStatus.TEMPORARY;
     }
 
-    public Product(@NotNull String name, int productIndex, double price,
+    public Product(@NotNull String name, Integer productIndex, double price,
                    int quantityStock, @NotNull ProductStatus status) {
         super(price, quantityStock);
         this.name = name;
@@ -104,11 +104,11 @@ public class Product extends AbstractProduct {
         this.status = status;
     }
 
-    public int getProductIndex() {
+    public Integer getProductIndex() {
         return productIndex;
     }
 
-    public void setProductIndex(int productIndex) {
+    public void setProductIndex(Integer productIndex) {
         this.productIndex = productIndex;
     }
 

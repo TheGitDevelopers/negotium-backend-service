@@ -135,9 +135,8 @@ class ProductServiceTest {
         assertEquals(newDate, updatedProduct.getExpiryDate());
     }
 
-    private Product getTestProduct(String name, int productIndex, double price, int quantityStock) {
-        Product product = new Product(name, productIndex, price, quantityStock);
-        return product;
+    private Product getTestProduct(String name, Integer productIndex, double price, int quantityStock) {
+        return new Product(name, productIndex, price, quantityStock);
     }
 
     private List<Product> getProducts() {

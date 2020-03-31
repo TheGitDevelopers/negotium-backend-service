@@ -8,6 +8,8 @@ public final class SecurityConstans {
     public static final String USER_URL = "/api/user";
     public static final String API_URL = "/api";
     public static final String REGISTER_URL = "/api/user/register";
+    public static final String API_EMPLOYEE = "/api/employee";
+    public static final String API_PRODUCTS = "/api/product";
 
     // Signing key for HS512 algorithm
     // You can use the page http://www.allkeysgenerator.com/ to generate all kinds of keys

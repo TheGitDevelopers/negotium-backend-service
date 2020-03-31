@@ -1,6 +1,6 @@
 package com.negotium.negotiumapp.model.warehouse;
 
-enum ProductStatus {
+public enum ProductStatus {
     CONSTANT("Constant"), SPECIAL("Special"), TEMPORARY("Temporary");
 
     private String status;

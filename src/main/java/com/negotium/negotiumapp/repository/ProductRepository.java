@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    Optional<Product> findByProductIndex(int productIndex);
+    Optional<Product> findByProductIndex(Integer productIndex);
 
     List<Product> findAllByNameContaining(String name);
 
-    void deleteProductByProductIndex(int index);
+    void deleteProductByProductIndex(Integer index);
 }
