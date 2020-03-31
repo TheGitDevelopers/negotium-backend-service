@@ -24,7 +24,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(path = "/findAll", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/findall", consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<ProductDto> findAll(@RequestParam(required = false) String name) {
         if (name != null) {
             return productService.findAllByNameContaining(name);

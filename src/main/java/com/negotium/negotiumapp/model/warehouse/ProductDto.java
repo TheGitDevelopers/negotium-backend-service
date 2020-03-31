@@ -109,4 +109,18 @@ public class ProductDto {
     public int hashCode() {
         return Objects.hash(id, name, status, price, total_price, expiryDate);
     }
+
+    @Override
+    public String toString() {
+        return "ProductDto{" +
+                "expiryDate=" + expiryDate +
+                ", id=" + id +
+                ", name='" + name + '\'' +
+                ", productIndex=" + productIndex +
+                ", status=" + status +
+                ", price=" + price +
+                ", total_price=" + total_price +
+                ", quantityStock=" + quantityStock +
+                '}';
+    }
 }
