@@ -32,8 +32,8 @@ public class ProductController {
         return productService.findAll();
     }
 
-    @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProductDto> save(@RequestBody ProductDto productDto) {
+    @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, params = "product_id")
+    public ResponseEntity<ProductDto> create(@RequestBody ProductDto productDto) {
         if (productDto.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product cannot have an id yet");
         }
@@ -55,7 +55,7 @@ public class ProductController {
     }
 
     @PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ProductDto> update(@PathVariable Long id, @RequestBody ProductDto productDto) {
+    public ResponseEntity<ProductDto> updateByID(@PathVariable Long id, @RequestBody ProductDto productDto) {
         if (!id.equals(productDto.getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product id must match with id in resource path");
         }

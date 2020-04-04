@@ -13,7 +13,7 @@ public abstract class AbstractProduct implements Comparable<Product> {
     protected LocalDateTime expiryDate;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "product_id", unique = true, nullable = false)
     private Long id;
     @Column(name = "price_product")
     private double price;
