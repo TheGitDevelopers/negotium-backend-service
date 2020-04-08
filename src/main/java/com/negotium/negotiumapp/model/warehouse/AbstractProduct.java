@@ -11,17 +11,17 @@ public abstract class AbstractProduct implements Comparable<Product> {
     @NotNull
     @Column(name = "expiry_date")
     protected LocalDateTime expiryDate;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "product_id", unique = true, nullable = false)
-    private Long id;
     @Column(name = "price_product")
-    private double price;
+    protected double price;
     @NotNull
     @Column(name = "totalprice")
-    private Double total_price;
+    protected Double total_price;
     @Column(name = "quantity_product")
-    private int quantityStock;
+    protected int quantityStock;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    private Long id;
 
     public AbstractProduct() {
     }

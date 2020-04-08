@@ -62,9 +62,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         AUTH_LOGIN_URL,
                         API_URL,
                         REGISTER_URL,
+                        API_PRODUCTS + "/**", //TODO: temporal
                         "/",
                         "/login**",
-                        "/api/employee/**",
+                        API_EMPLOYEE + "/**",
                         "/webjars/**",
                         "/error**").permitAll().
                 // all other requests need to be authenticated

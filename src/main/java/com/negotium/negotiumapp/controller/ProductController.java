@@ -32,7 +32,7 @@ public class ProductController {
         return productService.findAll();
     }
 
-    @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, params = "product_id")
+    @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE, params = "id")
     public ResponseEntity<ProductDto> create(@RequestBody ProductDto productDto) {
         if (productDto.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product cannot have an id yet");

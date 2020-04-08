@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 @SecondaryTable(name = "parent_product")
 public class Product extends AbstractProduct {
 
