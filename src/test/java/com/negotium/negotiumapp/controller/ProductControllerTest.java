@@ -159,6 +159,7 @@ class ProductControllerTest extends AbstractRestControllerTest {
         entity.setQuantityStock(297);
         entity.setPrice(1.5);
         Double total_price = entity.getTotal_price();
+        entity.setTotal_price(total_price);
         ProductDto updatedDTO = ProductMapper.toDto(entity);
 
         given(service.updateProduct(any(ProductDto.class))).willReturn(updatedDTO);
