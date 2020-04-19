@@ -1,11 +1,7 @@
 package com.negotium.negotiumapp.service;
 
-import com.negotium.negotiumapp.exception.DuplicateEmailException;
+
 import com.negotium.negotiumapp.exception.DuplicatePersonIdNumberException;
-import com.negotium.negotiumapp.exception.DuplicateUsernameException;
-import com.negotium.negotiumapp.model.user.User;
-import com.negotium.negotiumapp.model.user.UserDto;
-import com.negotium.negotiumapp.model.user.UserMapper;
 import com.negotium.negotiumapp.model.user.employee.Employee;
 import com.negotium.negotiumapp.model.user.employee.EmployeeDto;
 import com.negotium.negotiumapp.model.user.employee.EmployeeMapper;
@@ -23,25 +19,29 @@ public class EmployeeService {
     private EmployeeRepository employeeRepository;
 
     @Autowired
-    public EmployeeService(EmployeeRepository employeeRepository){
+    public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
 
-
-    public EmployeeDto save(EmployeeDto employeeDto){
+    public EmployeeDto save(EmployeeDto employeeDto) {
         Optional<Employee> findByEmployeeIndex = employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
+        findByEmployeeIndex.orElseThrow(() -> {
+            throw new NullPointerException("Employee not found");
+        });
         findByEmployeeIndex.ifPresent(x -> {
-            throw new DuplicatePersonIdNumberException();
+            throw new DuplicatePersonIdNumberException("User with this person id number is already exist");
         });
         return mapAndSaveUser(employeeDto);
     }
-    
 
     public EmployeeDto update(EmployeeDto employeeDto) {
         Optional<Employee> findByPersonIdNumber = employeeRepository.findByEmployeeIndex(employeeDto.getEmployeeIndex());
+        findByPersonIdNumber.orElseThrow(() -> {
+            throw new NullPointerException("Employee not found");
+        });
         findByPersonIdNumber.ifPresent(x -> {
-            if(!x.getId().equals(employeeDto.getId()))
-                throw new DuplicatePersonIdNumberException();
+            if (!x.getId().equals(employeeDto.getId()))
+                throw new DuplicatePersonIdNumberException("User with this person id number is already exist");
         });
         return mapAndSaveUser(employeeDto);
     }
@@ -52,21 +52,21 @@ public class EmployeeService {
         return EmployeeMapper.toDto(savedEmployee);
     }
 
-    public List<EmployeeDto> findAllByName(String name){
+    public List<EmployeeDto> findAllByName(String name) {
         return employeeRepository.findAllByName(name)
                 .stream()
                 .map(EmployeeMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public List<EmployeeDto> findAll(){
+    public List<EmployeeDto> findAll() {
         return employeeRepository.findAll()
                 .stream()
                 .map(EmployeeMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public Optional<EmployeeDto> findById(Long id){
+    public Optional<EmployeeDto> findById(Long id) {
         return employeeRepository.findById(id).map(EmployeeMapper::toDto);
     }
 }

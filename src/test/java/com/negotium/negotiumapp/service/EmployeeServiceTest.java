@@ -116,7 +116,7 @@ public class EmployeeServiceTest {
         employee.setEmployeeIndex(777777);
 
         EmpDetailsBuilder builder = new EmpDetailsBuilder();
-        builder.setEmail(email);
+        builder.setEmployeeEmail(email);
         builder.setContractType("FullTime");
         builder.setHoliday(22);
         builder.setSalary(30000);

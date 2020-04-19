@@ -2,13 +2,13 @@ package com.negotium.negotiumapp.service;
 
 import com.negotium.negotiumapp.exception.DuplicateEmailException;
 import com.negotium.negotiumapp.exception.DuplicateUsernameException;
+import com.negotium.negotiumapp.exception.UserNotFoundException;
 import com.negotium.negotiumapp.model.user.User;
 import com.negotium.negotiumapp.model.user.UserDto;
 import com.negotium.negotiumapp.model.user.UserMapper;
 import com.negotium.negotiumapp.model.user.UserRole;
 import com.negotium.negotiumapp.repository.UserRepository;
 import com.negotium.negotiumapp.repository.UserRoleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,19 +27,10 @@ public class UserService {
     private UserRoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserRoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-    }
-
-    @Autowired
-    public void setRoleRepository(UserRoleRepository roleRepository) {
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public boolean addWithDefaultRole(UserDto user) {
@@ -63,12 +54,15 @@ public class UserService {
     }
 
     private UserDto save(UserDto user) {
-        Optional<User> userByUsername = userRepository.findAllByUsername(user.getUsername());
-        userByUsername.ifPresent(x -> {
-            throw new DuplicateUsernameException();
-        });
-        userByUsername.ifPresent(x -> {
-            throw new DuplicateEmailException();
+        List<User> userByUsername = userRepository.findByUsernameContaining(user.getUsername());
+        for (User e : userByUsername) {
+            if (e.getUsername().equals(user.getUsername())) {
+                throw new DuplicateUsernameException("User with this username is already exists");
+            }
+        }
+        Optional<User> userByEmail = userRepository.findByEmail(user.getEmail());
+        userByEmail.ifPresent(x -> {
+            throw new DuplicateEmailException("User with this email address is already exists");
         });
         User userEntity = UserMapper.toEntity(user);
         User savedUser = userRepository.save(userEntity);
@@ -80,5 +74,29 @@ public class UserService {
                 .stream()
                 .map(UserMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<UserDto> findAllByUsername(String username) {
+        return userRepository.findByUsernameContaining(username)
+                .stream()
+                .filter(x -> x.getUsername().contains(username))
+                .map(UserMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    public Optional<UserDto> findById(Long id) {
+        return userRepository.findById(id).map(UserMapper::toDto);
+    }
+
+    public Boolean deleteById(Long id) {
+        Boolean isUserDelete;
+        Optional<User> userToDelete = userRepository.findById(id);
+        userToDelete.ifPresentOrElse(x ->
+                        userRepository.deleteById(id),
+                () -> {
+                    throw new UserNotFoundException("User not found");
+                });
+        isUserDelete = true;
+        return isUserDelete;
     }
 }

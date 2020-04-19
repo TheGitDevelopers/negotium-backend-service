@@ -64,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         REGISTER_URL,
                         "/",
                         "/login**",
+                        "/api/user/register",
                         "/api/employee/**",
                         "/webjars/**",
                         "/error**").permitAll().
@@ -79,7 +80,3 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 }
-
-
-
-
