@@ -64,4 +64,4 @@ spring.datasource.password=admin**
 
 	  **Projekt uruchamiamy po przez opcję "run" w prawym górnym rogu lub shift + F10**
 
-test
+
