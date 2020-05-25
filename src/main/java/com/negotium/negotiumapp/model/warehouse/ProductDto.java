@@ -1,11 +1,14 @@
 package com.negotium.negotiumapp.model.warehouse;
 
-import java.time.LocalDateTime;
+import com.negotium.negotiumapp.security.config.date.NegotiumDateTimeConfig;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class ProductDto {
 
-    protected LocalDateTime expiryDate;
+    protected LocalDate expiryDate;
     private Long id;
     private String name;
     private Integer productIndex;
@@ -17,7 +20,7 @@ public class ProductDto {
     public ProductDto() {
     }
 
-    public ProductDto(Long id, String name, Integer productIndex, ProductStatus status, double price, Double total_price, int quantityStock, LocalDateTime expiryDate) {
+    public ProductDto(Long id, String name, Integer productIndex, ProductStatus status, double price, Double total_price, int quantityStock, LocalDate expiryDate) {
         this.id = id;
         this.name = name;
         this.productIndex = productIndex;
@@ -84,11 +87,11 @@ public class ProductDto {
         this.quantityStock = quantityStock;
     }
 
-    public LocalDateTime getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return expiryDate;
     }
 
-    public void setExpiryDate(LocalDateTime expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) {
         this.expiryDate = expiryDate;
     }
 
@@ -113,7 +116,7 @@ public class ProductDto {
     @Override
     public String toString() {
         return "ProductDto{" +
-                "expiryDate=" + expiryDate +
+                "expiryDate=" + expiryDate.format(DateTimeFormatter.ofPattern(NegotiumDateTimeConfig.dateFormat)) +
                 ", id=" + id +
                 ", name='" + name + '\'' +
                 ", productIndex=" + productIndex +

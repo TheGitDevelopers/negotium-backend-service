@@ -17,7 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Optional;
@@ -55,7 +55,7 @@ class ProductControllerTest extends AbstractRestControllerTest {
     @Test
     void should_find_all_products() throws Exception {
 //        given
-        LocalDateTime expiry_date = LocalDateTime.now().plus(5, ChronoUnit.DAYS);
+        LocalDate expiry_date = LocalDate.now().plus(5, ChronoUnit.DAYS);
         ProductDto dto1 = new ProductDto(
                 33L,
                 "Avocado per item",
@@ -90,7 +90,7 @@ class ProductControllerTest extends AbstractRestControllerTest {
 
     @Test
     void should_find_by_id() throws Exception {
-        LocalDateTime expiry_date = LocalDateTime.now().plus(3, ChronoUnit.DAYS);
+        LocalDate expiry_date = LocalDate.now().plus(3, ChronoUnit.DAYS);
 
 //        given
         ProductDto dto = new ProductDto(
@@ -118,7 +118,7 @@ class ProductControllerTest extends AbstractRestControllerTest {
     @Test
     void should_save_rice_milk() throws Exception {
 //        given
-        LocalDateTime expiry_date = LocalDateTime.now().plus(20, ChronoUnit.DAYS);
+        LocalDate expiry_date = LocalDate.now().plus(20, ChronoUnit.DAYS);
         ProductDto dto = new ProductDto(
                 null,
                 "Rice Milk 1L",
@@ -147,7 +147,7 @@ class ProductControllerTest extends AbstractRestControllerTest {
     @Test
     void should_update_product() throws Exception {
 //        given
-        LocalDateTime expiry_date = LocalDateTime.now().plus(3, ChronoUnit.DAYS);
+        LocalDate expiry_date = LocalDate.now().plus(3, ChronoUnit.DAYS);
         ProductDto avocado = new ProductDto(
                 (long) 33,
                 "Avocado per item",

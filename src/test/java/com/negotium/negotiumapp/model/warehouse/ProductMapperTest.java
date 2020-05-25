@@ -2,7 +2,7 @@ package com.negotium.negotiumapp.model.warehouse;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +25,7 @@ class ProductMapperTest {
 
     @Test
     void toEntity() {
-        LocalDateTime expirydate = LocalDateTime.now().plus(5, ChronoUnit.DAYS);
+        LocalDate expirydate = LocalDate.now().plus(5, ChronoUnit.DAYS);
         ProductDto productDto = new ProductDto(33L, "Avocado per item", 8, ProductStatus.SPECIAL, 1.7, 5.1, 3, expirydate);
 
 //        when

@@ -80,11 +80,11 @@ public class Product extends AbstractProduct {
         super.setTotal_price(total_price);
     }
 
-    public LocalDateTime getExpiryDate() {
+    public LocalDate getExpiryDate() {
         return super.getExpiryDate();
     }
 
-    public void setExpiryDate(LocalDateTime expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) {
         super.setExpiryDate(expiryDate);
     }
 
@@ -133,7 +133,7 @@ public class Product extends AbstractProduct {
                 "\t name = " + this.name +
                 "\t status = " + this.status +
                 "\t price = " + super.getPrice() +
-                "\t expiry date = " + expiryDate.format(DateTimeFormatter.ISO_DATE) +
+                "\t expiry date = " + expiryDate.format(DateTimeFormatter.ofPattern(NegotiumDateTimeConfig.dateFormat)) +
                 '}';
     }
 

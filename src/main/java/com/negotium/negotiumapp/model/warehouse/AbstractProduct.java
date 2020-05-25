@@ -7,7 +7,8 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 @MappedSuperclass
@@ -18,7 +19,7 @@ public abstract class AbstractProduct implements Comparable<Product>, Serializab
     @Column(name = "expiry_date")
     @JsonSerialize(using = ToStringSerializer.class)
     @JsonDeserialize(using = LocalDateDeserializer.class)
-    protected LocalDateTime expiryDate;
+    protected LocalDate expiryDate;
 
     @Column(name = "price_product")
     protected double price;
@@ -39,14 +40,14 @@ public abstract class AbstractProduct implements Comparable<Product>, Serializab
         this.price = price;
         this.quantityStock = 0;
         this.total_price = getTotal_price();
-        this.expiryDate = LocalDateTime.now().plus(30, ChronoUnit.DAYS);
+        this.expiryDate = LocalDate.now().plus(30, ChronoUnit.DAYS);
     }
 
     public AbstractProduct(@NotNull double price, @NotNull int quantityStock) {
         this.price = price;
         this.quantityStock = quantityStock;
         this.total_price = getTotal_price();
-        this.expiryDate = LocalDateTime.now().plus(30, ChronoUnit.DAYS);
+        this.expiryDate = LocalDate.now().plus(30, ChronoUnit.DAYS);
     }
 
     public boolean adjustStock(int quantity) {
@@ -91,7 +92,7 @@ public abstract class AbstractProduct implements Comparable<Product>, Serializab
         this.quantityStock = quantityStock;
     }
 
-    public LocalDateTime getExpiryDate() {
+    public LocalDate getExpiryDate() {
         if (isFresh()) {
             return expiryDate;
         } else {
@@ -99,7 +100,7 @@ public abstract class AbstractProduct implements Comparable<Product>, Serializab
         }
     }
 
-    public void setExpiryDate(LocalDateTime expiryDate) {
+    public void setExpiryDate(LocalDate expiryDate) {
         if (isFresh(expiryDate)) {
             this.expiryDate = expiryDate;
         } else {
@@ -115,10 +116,10 @@ public abstract class AbstractProduct implements Comparable<Product>, Serializab
     }
 
     private boolean isFresh() {
-        return !(this.expiryDate.isBefore(LocalDateTime.now()));
+        return !(this.expiryDate.isBefore(LocalDate.now()));
     }
 
-    private boolean isFresh(LocalDateTime newExpiryDate) {
-        return !(newExpiryDate.isBefore(LocalDateTime.now()));
+    private boolean isFresh(LocalDate newExpiryDate) {
+        return !(newExpiryDate.isBefore(LocalDate.now()));
     }
 }

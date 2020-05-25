@@ -4,12 +4,13 @@ import com.negotium.negotiumapp.model.warehouse.Product;
 import com.negotium.negotiumapp.model.warehouse.ProductDto;
 import com.negotium.negotiumapp.model.warehouse.ProductMapper;
 import com.negotium.negotiumapp.repository.ProductRepository;
+import com.negotium.negotiumapp.security.config.date.NegotiumDateTimeConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -111,11 +112,12 @@ class ProductServiceTest {
 //        given
         Product oldProduct = getTestProduct("Car Toy", 6, 30, 100);
         oldProduct.setId(33L);
-        String oldExipiryDate = oldProduct.getExpiryDate().format(DateTimeFormatter.ISO_DATE);
+        String oldExipiryDate = oldProduct.getExpiryDate().format(DateTimeFormatter.ofPattern(NegotiumDateTimeConfig.dateFormat));
 
         Product updatedProduct = getTestProduct("Car Toy2", 6, 30, 100);
         updatedProduct.setId(33L);
-        LocalDateTime newDate = LocalDateTime.now().plus(5, ChronoUnit.YEARS);
+        LocalDate newDate = LocalDate.now().plus(5, ChronoUnit.YEARS);
+        String newDateString = newDate.format(DateTimeFormatter.ofPattern(NegotiumDateTimeConfig.dateFormat));
         updatedProduct.setExpiryDate(newDate);
 
         given(productRepository.findById(anyLong()))
@@ -133,6 +135,7 @@ class ProductServiceTest {
         assertEquals(oldProduct.getProductIndex(), updatedProduct.getProductIndex());
         assertThat(updatedProduct.getName(), not(equalTo(oldProduct.getName())));
         assertEquals(newDate, updatedProduct.getExpiryDate());
+        assertEquals(newDateString, not(equalTo(oldExipiryDate)));
     }
 
     private Product getTestProduct(String name, Integer productIndex, double price, int quantityStock) {
