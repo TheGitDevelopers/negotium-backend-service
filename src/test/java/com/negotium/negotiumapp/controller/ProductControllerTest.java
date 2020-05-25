@@ -8,14 +8,13 @@ import com.negotium.negotiumapp.security.SecurityConstans;
 import com.negotium.negotiumapp.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
@@ -23,8 +22,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -33,6 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@ExtendWith(MockitoExtension.class)
 class ProductControllerTest extends AbstractRestControllerTest {
 
     @Mock
@@ -112,9 +111,8 @@ class ProductControllerTest extends AbstractRestControllerTest {
                 get(SecurityConstans.API_PRODUCTS + "/33")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(MockMvcResultHandlers.print());
-//                .andExpect(jsonPath("$.price", equalTo(1.7)))
-//                .andExpect(jsonPath("$.productIndex", equalTo(8)));
+                .andExpect(jsonPath("$.price", equalTo(1.7)))
+                .andExpect(jsonPath("$.productIndex", equalTo(8)));
     }
 
     @Test
@@ -122,7 +120,7 @@ class ProductControllerTest extends AbstractRestControllerTest {
 //        given
         LocalDateTime expiry_date = LocalDateTime.now().plus(20, ChronoUnit.DAYS);
         ProductDto dto = new ProductDto(
-                32L,
+                null,
                 "Rice Milk 1L",
                 7,
                 ProductStatus.CONSTANT,
@@ -141,7 +139,7 @@ class ProductControllerTest extends AbstractRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.name", equalTo("Rice Milk 1L")))
-                .andExpect(jsonPath("$.status", equalTo(ProductStatus.CONSTANT)))
+                .andExpect(jsonPath("$.status", equalTo(ProductStatus.CONSTANT.toString())))
                 .andExpect(jsonPath("$.productIndex", equalTo(7)));
 
     }
@@ -169,36 +167,17 @@ class ProductControllerTest extends AbstractRestControllerTest {
 
         given(service.updateProduct(any(ProductDto.class))).willReturn(updatedDTO);
 
-        MockHttpServletRequestBuilder requestBuilder = put(SecurityConstans.API_PRODUCTS + "/33", 33L)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(asJsonString(updatedDTO));
-        MvcResult result = mockMvc.perform(
-                requestBuilder
-        )
-                .andDo(MockMvcResultHandlers.print())
-//                .andExpect(status().isOk())
-                .andExpect(status().isBadRequest())
-                .andReturn();
+        mockMvc.perform(
+                put(SecurityConstans.API_PRODUCTS + "/33", 33L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(updatedDTO)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.price", equalTo(1.5)))
+                .andExpect(jsonPath("$.price", not(equalTo(1.7))))
+                .andExpect(jsonPath("$.productIndex", equalTo(8)))
+                .andExpect(jsonPath("$.quantityStock", equalTo(297)))
+                .andExpect(jsonPath("$.total_price", equalTo(445.5)))
+                .andExpect(jsonPath("$.total_price", not(equalTo(2400))));
 
-        String content = result.getResponse().getContentAsString();
-        String status = result.getResponse().getErrorMessage();
-
-        System.out.println("\n\n >>> CONTENT: " + content);
-        System.out.println("\n\n >>> STATUS : " + status);
-
-
-//                .andExpect(jsonPath("$.price", equalTo(total_price)))
-//                .andExpect(jsonPath("$.price", not(equalTo(1.7))))
-//                .andExpect(jsonPath("$.productIndex", equalTo(8)))
-//                .andExpect(jsonPath("$.quantityStock", equalTo(300)))
-//                .andExpect(jsonPath("$.total_price", equalTo(2400)))
-//                .andExpect(jsonPath("$.total_price", not(equalTo(2400))));
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.price", equalTo(total_price)))
-//                .andExpect(jsonPath("$.price", not(equalTo(1.7))))
-//                .andExpect(jsonPath("$.productIndex", equalTo(8)))
-//                .andExpect(jsonPath("$.quantityStock", equalTo(300)))
-//                .andExpect(jsonPath("$.total_price", equalTo(2400)))
-//                .andExpect(jsonPath("$.total_price", not(equalTo(2400))));
     }
 }

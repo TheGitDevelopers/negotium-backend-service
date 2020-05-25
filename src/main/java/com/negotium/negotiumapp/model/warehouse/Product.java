@@ -1,17 +1,17 @@
 package com.negotium.negotiumapp.model.warehouse;
 
+import com.negotium.negotiumapp.security.config.date.NegotiumDateTimeConfig;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 @Entity
 @Table(name = "products")
-@SecondaryTable(name = "parent_product")
 public class Product extends AbstractProduct {
 
     @NotNull
@@ -19,10 +19,10 @@ public class Product extends AbstractProduct {
     private String name;
 
     @NotNull
-    @Column(name = "status")
+    @Column(name = "status_prod")
     private ProductStatus status;
 
-    @Column(name = "index")
+    @Column(name = "index_prod")
     private Integer productIndex;
 
     public Product() {

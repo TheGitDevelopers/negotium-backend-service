@@ -1,16 +1,25 @@
 package com.negotium.negotiumapp.model.warehouse;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @MappedSuperclass
-public abstract class AbstractProduct implements Comparable<Product> {
+public abstract class AbstractProduct implements Comparable<Product>, Serializable {
+    private static final long serialVersionUID = 1L;
 
     @NotNull
     @Column(name = "expiry_date")
+    @JsonSerialize(using = ToStringSerializer.class)
+    @JsonDeserialize(using = LocalDateDeserializer.class)
     protected LocalDateTime expiryDate;
+
     @Column(name = "price_product")
     protected double price;
     @NotNull
@@ -20,7 +29,7 @@ public abstract class AbstractProduct implements Comparable<Product> {
     protected int quantityStock;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
+    @Column(name = "id_product")
     private Long id;
 
     public AbstractProduct() {
