@@ -178,6 +178,5 @@ class ProductControllerTest extends AbstractRestControllerTest {
                 .andExpect(jsonPath("$.quantityStock", equalTo(297)))
                 .andExpect(jsonPath("$.total_price", equalTo(445.5)))
                 .andExpect(jsonPath("$.total_price", not(equalTo(2400))));
-
     }
 }
