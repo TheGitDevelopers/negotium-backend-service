@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 
@@ -134,8 +135,7 @@ class ProductServiceTest {
         assertEquals(oldProduct.getProductIndex(), updatedProduct.getProductIndex());
         assertThat(updatedProduct.getName(), not(equalTo(oldProduct.getName())));
         assertEquals(newDate, updatedProduct.getExpiryDate());
-        assertNotEquals(newDateString, oldExipiryDate);
-
+        assertEquals(newDateString, not(equalTo(oldExipiryDate)));
     }
 
     private Product getTestProduct(String name, Integer productIndex, double price, int quantityStock) {
