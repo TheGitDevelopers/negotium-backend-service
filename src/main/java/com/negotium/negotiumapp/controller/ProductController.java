@@ -17,19 +17,19 @@ import java.util.List;
 @RestController
 @RequestMapping(SecurityConstans.API_PRODUCTS)
 public class ProductController {
-    private final ProductService productService;
+    private final ProductService service;
 
     @Autowired
     public ProductController(ProductService productService) {
-        this.productService = productService;
+        this.service = productService;
     }
 
     @GetMapping(path = "/findall", consumes = MediaType.APPLICATION_JSON_VALUE)
     public List<ProductDto> findAll(@RequestParam(required = false) String name) {
         if (name != null) {
-            return productService.findAllByNameContaining(name);
+            return service.findAllByNameContaining(name);
         }
-        return productService.findAll();
+        return service.findAll();
     }
 
     @PostMapping(path = "/save", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -37,7 +37,7 @@ public class ProductController {
         if (productDto.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product cannot have an id yet");
         }
-        ProductDto savedProduct = productService.addProduct(productDto);
+        ProductDto savedProduct = service.addProduct(productDto);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -49,7 +49,7 @@ public class ProductController {
 
     @GetMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ProductDto> findById(@PathVariable Long id) {
-        return productService.findById(id)
+        return service.findById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -59,7 +59,7 @@ public class ProductController {
         if (!id.equals(productDto.getId())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Product id must match with id in resource path");
         }
-        ProductDto updatedProduct = productService.updateProduct(productDto);
+        ProductDto updatedProduct = service.updateProduct(productDto);
         return ResponseEntity.ok(updatedProduct);
     }
 }
