@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping(SecurityConstans.API_PRODUCTS)
 public class ProductController {
-    private final ProductService service;
+    private ProductService service;
 
     @Autowired
     public ProductController(ProductService productService) {
